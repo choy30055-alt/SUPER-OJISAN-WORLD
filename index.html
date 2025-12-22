@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" media="screen" href="./src/style.css">
+    <link rel = "icon" href="data:,">
+    <title>mario</title>
+</head>
+<body>
+    
+    <div class="spf-controller">
+       
+        <div class="controller-left">
+            <div class="btn-set">
+                <div class="cross-layout">
+                    <button id="" class="position-top btn cross-key-btn-up"><span class="top-mark"></span></button>
+                    <button id="LeftB" class="position-left btn cross-key-btn-left"><span class="left-mark"></span></button>
+                    <button id="RightB" class="position-right btn cross-key-btn-right"><span class="right-mark"></span></button>
+                    <button id="" class="position-bottom btn cross-key-btn-down"><span class="bottom-mark"></span></button>
+                </div>
+            </div>
+        </div>
+
+        <canvas id="can"></canvas>
+        <div id="faceBtn"></div>
+        <div id="gameOverlay"></div>
+        <button id="mstart" class="start"onclick="gameStart()" ></button>
+        <div class="controller-right">
+            <div class="btn-set">
+                <div class="cross-layout">
+                    <button class="btn abxy-btn position-top btn-x"></button>
+                    <button class="btn abxy-btn position-left btn-y"></button>
+                    <button id="Abtn" class="btn abxy-btn position-right btn-a"></button>
+                    <button id="Bbtn" class="btn abxy-btn position-bottom btn-b"></button>
+                </div>
+            </div>
+        </div>
+   </div>
+
+   <script src="./src/const.js"></script>
+   <script src="./src/block.js"></script>
+   <script src="./src/map99.js"></script>
+   <script src="./src/flag.js"></script> 
+   <script src="./src/item.js"></script>
+   <script src="./src/kuribo.js"></script>
+   <script src="./src/nokonoko.js"></script>
+   <script src="./src/hammer.js"></script>
+   <script src="./src/jyugem.js"></script>
+   <script src="./src/togezo.js"></script>
+   <script src="./src/hanabi.js"></script>
+   <script src="./src/fire.js"></script>
+   <script src="./src/ojisan.js"></script>
+   <script src="./src/main.js"></script>
+</body>
+</html>

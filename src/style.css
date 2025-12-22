@@ -1,0 +1,261 @@
+*
+/* ---------- style.css（縦はキャンバス上、コントローラー左右下） ---------- */
+/* ===== タッチ無効化 ===== */
+body {
+  touch-action: manipulation;
+  touch-action: none;
+  
+}
+
+/* ===== 基本 ===== */
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(213, 238, 175);
+}
+
+/* ===== ゲーム全体 ===== */
+.spf-controller {
+  position: relative; /* startボタン基準 */
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  width: 100%;
+  max-width: 1400px;
+  height: 100svh;
+  box-sizing: border-box;
+  padding: 8px;
+}
+
+/* ===== キャンバス ===== */
+#stage, canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 90svh;
+  margin: 0 auto;
+}
+
+/* ===== コントローラー共通 ===== */
+.controller-left,
+.controller-right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+}
+
+/* 横：端寄せ */
+.controller-left {
+  justify-self: start;
+}
+
+.controller-right {
+  justify-self: end;
+}
+
+/* ===== スタート ===== */
+.start {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 330px;
+  height: 330px;
+  border: none;
+  background-image: url(../image/mrost.png);
+  background-size: cover;
+  background-color: transparent;
+  z-index: 10;
+}
+
+/* ===== 共通ボタン ===== */
+.btn {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+/* ===== 十字配置 ===== */
+.cross-layout {
+  display: grid;
+  grid-template-columns: 38px 38px 38px;
+  grid-template-rows: 38px 38px 38px;
+}
+
+.position-top    { grid-column: 2; grid-row: 1; }
+.position-left   { grid-column: 1; grid-row: 2; }
+.position-center { grid-column: 2; grid-row: 2; }
+.position-right  { grid-column: 3; grid-row: 2; }
+.position-bottom { grid-column: 2; grid-row: 3; }
+
+/* ===== 方向キー ===== */
+.cross-key-btn-left,
+.cross-key-btn-right,
+.cross-key-btn-up,
+.cross-key-btn-down {
+  width: 38px;
+  height: 38px;
+  background-size: cover;
+}
+
+.cross-key-btn-left  { background-image: url(../image/arrowleft.png); }
+.cross-key-btn-right { background-image: url(../image/arrowright.png); }
+.cross-key-btn-up    { background-image: url(../image/arrowup.png); }
+.cross-key-btn-down  { background-image: url(../image/arrowdown.png); }
+
+/* ===== ABXY ===== */
+.abxy-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background-size: cover;
+}
+
+.btn-x { background-image: url(../image/xbtn.png); }
+.btn-y { background-image: url(../image/ybtn.png); }
+.btn-a { background-image: url(../image/abtn.png); }
+.btn-b { background-image: url(../image/bbtn.png); }
+
+/* ===== 円枠 ===== */
+.btn-set {
+  padding: 10px;
+  background-color: rgba(66, 86, 123, 0.5);
+  border-radius: 50%;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ===== 向き補正 ===== */
+.left-mark   { transform: rotate(-90deg); }
+.right-mark  { transform: rotate(90deg); }
+.bottom-mark { transform: rotate(180deg); }
+
+/* ===========================
+   📱 縦画面レイアウト
+   canvas 上 / コントローラー 下（左右）
+=========================== */
+@media screen and (orientation: portrait) {
+
+  .spf-controller {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    padding-bottom: 16px;
+  }
+
+  #stage, canvas {
+    grid-column: 1 / span 2;
+    grid-row: 1;
+    max-height: 65svh;
+  }
+
+  .controller-left {
+    grid-column: 1;
+    grid-row: 2;
+    justify-self: center;
+    margin-top: 24px;
+  }
+
+  .controller-right {
+    grid-column: 2;
+    grid-row: 2;
+    justify-self: center;
+    margin-top: 24px;
+  }
+
+  /* スタートを上へ */
+  .start {
+    top: 28%;
+  }
+}
+
+/* ===========================
+   📱 横画面微調整
+=========================== */
+@media screen and (orientation: landscape) {
+
+  #stage, canvas {
+    max-height: 95svh;
+  }
+
+  .controller-left {
+    margin-left: 4px;
+  }
+
+  .controller-right {
+    margin-right: 4px;
+  }
+}
+
+/* ===== 顔タップ用透明ボタン ===== */
+#faceBtn {
+  position: absolute;
+  z-index: 9999;
+  width: 48px;
+  height: 48px;
+  background: rgba(0,0,0,0);
+  touch-action: none;
+  pointer-events: auto;
+}
+
+#gameOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* ゲーム操作を邪魔しない */
+  z-index: 20;
+}
+
+#ojisanBtn {
+    width: 120px;
+    height: 120px;
+    background-image: url('../image/mariojump.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    border: none;
+    position: absolute;
+    display: none; /* 最初は非表示 */
+    cursor: pointer;
+    outline: none;
+    box-shadow: none;
+    background-color: transparent;
+    pointer-events: auto;
+}
+
+#ojisanBtn:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+/* ジャンプアニメ */
+#ojisanBtn.jump {
+    animation: jump 0.8s ease-out forwards;
+}
+
+@keyframes jump {
+    0%   { transform: translateY(0) scale(1); }
+    40%  { transform: translateY(-30px) scale(1.05); }
+    100% { transform: translateY(0) scale(1); }
+}
+
+/* ふわふわアニメ（常時） */
+#ojisanBtn.float {
+    animation: float 2.4s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%   { transform: translateY(0); }
+    50%  { transform: translateY(-15px); }
+    100% { transform: translateY(0); }
+}
+
