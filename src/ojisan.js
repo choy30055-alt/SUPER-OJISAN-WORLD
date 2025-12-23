@@ -39,6 +39,7 @@ class Ojisan {
         this.tookDmgToge = 0; //負
         this.dealDmgToge = 0; //勝
         this.tookDmgHammer = 0;  //負
+        this.dealDmgHammer = 0; //勝
         //this.kuriboHit = 0;
         //this.kuriboAttack = 0;
         //this.togezoHit = 0;
@@ -165,6 +166,33 @@ class Ojisan {
             } else {this.x += 20;} 
             if(++this.dealDmgNoko == 20) {
                this.dealDmgNoko = 0; 
+               yaSound.play();
+            }
+            return;
+        }
+
+        //ハンマーブロス：WIN_踏んだ時
+        if(this.dealDmgHammer) {
+            if (this.dealDmgHammer === 1) {
+                fumuSound.play();
+                hammerBrosFlip.push(new HammerBrosFlip(134, this.x>>8, (this.y - (16 << 4)) >> 8, 0, 1, ITEM_HAMMERBROS));
+                //hammerBrosFlip.push(new HammerBrosFlip(134, this.x>>4, (this.y>>4)- 16, 0, -10, ITEM_HAMMERBROS));
+                this.vy = -80;        // ★ 踏みジャンプの本体
+                this.jump = 1;        // ★ 空中判定
+            }
+            if(this.type == TYPE_BIG) {
+                this.snum =6;
+            } else if(this.type == TYPE_FIRE){
+                this.snum = 262;
+            } else{
+                this.snum = 38; 
+            } 
+            if(this.dirc) this.snum += 48; //左向きは+48を使う
+            //this.y -= 12;
+            if(this.dirc) {this.x -= 20;
+            } else {this.x += 20;} 
+            if(++this.dealDmgHammer == 20) {
+               this.dealDmgHammer = 0; 
                yaSound.play();
             }
             return;

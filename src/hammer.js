@@ -8,6 +8,7 @@ class HammerBros {
         this.vy = vy;
         this.w = 16;
         this.h = 32;
+        this.ay = 0;
         this.acou = 0;
         this.kill = false;
         this.dirc = -1;      // ★ 初期は左向き固定 向き（-1:左 / 1:右）
@@ -16,12 +17,12 @@ class HammerBros {
         if (tp === undefined) tp = ITEM_HAMMERBROS;
         this.tp = tp;
         this.throwTimer = 0;     // 投げ間隔用
-        this.throwInterval = 150; // 90フレームごと（約1.5秒）
+        this.throwInterval = 15000; // 90フレームごと（約1.5秒）
         this.throwRangeX = 400;  // 横距離（px）
         this.throwRangeY = 96;   // 縦距離（px）
         this.landed = false;
         this.jumpTimer = 0;
-        this.jumpInterval = 60; // 基本周期（1.5秒）
+        this.jumpInterval = 60000; // 基本周期（1.5秒）
         this.active = false;        // ★ 起動フラグ
         this.activateRange = 120;  // ★ おじさん接近で起動（px）
     }
@@ -58,6 +59,7 @@ class HammerBros {
         this.checkWall();
         this.checkThrowHammer();
         this.checkRandomJump();
+        this.proc_HammerBros();
         this.acou++;
         this.updateAnim();
     }
@@ -147,6 +149,51 @@ class HammerBros {
         // 次の判定までの間隔をランダムに
         this.jumpTimer = this.jumpInterval + (Math.random() * 60 | 0);
     }
+
+    //当たり判定
+    checkHit(obj) {
+        //物体1
+        let left1 = (this.x>>4)      + 2;
+        let right1 = left1 + this.w  - 4; 
+        let top1 = (this.y>>4) + 5 + this.ay;
+        let bottom1 = top1 + this.h  - 7;
+        //物体2
+        let left2 = (obj.x>>4)      + 2;
+        let right2 = left2 + obj.w  - 4; 
+        let top2 = (obj.y>>4 ) + 5 + obj.ay;
+        let bottom2 = top2 + obj.h  - 7;
+
+        return(left1 <= right2 &&
+            right1 >= left2 &&
+            top1 <= bottom2 &&
+            bottom1 >= top2); //条件に当たればtrue
+    }
+
+     checkEnemyCollision(obj) {
+        if(!this.checkHit(obj)) {
+            return "none"; //衝突なし
+        }
+        const stompThreshold = (this.y>>4) + this.h / 4; //上の1/4の範囲
+        if((obj.y>>4) + obj.h <= stompThreshold && obj.vy > 10) {
+            return "stomp"; //踏みつけ 
+        }
+        return "hit"; // ← 必須
+    } 
+
+    //ハンマーブロスの処理、当たり判定の判定と出現後
+    proc_HammerBros() {
+        if(this.checkHit(ojisan)) {
+            const collisionType = this.checkEnemyCollision(ojisan);
+            if(collisionType === "stomp") {
+                ojisan.dealDmgHammer = 1;
+                this.kill = true;
+                console.log(ojisan.dealDmghammer);
+                return true;
+            }
+        }
+        return false;
+    } 
+    
 }
 
 //ハンマーのクラス
