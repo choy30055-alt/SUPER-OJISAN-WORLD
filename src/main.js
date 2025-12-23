@@ -436,13 +436,13 @@ function gameStart() {  //スタートボタンでゲーム開始
     imgCoin.onload = () => {
         coinImage = imgCoin; // 読み込み完了後に変数にセット
     }
-    imgCoin.src = "image/mrocoin.png";
+    imgCoin.src = "image/coin.png";
 
     const imgFace = new Image();
     imgFace.onload = () => {
         faceImage = imgFace; // 読み込み完了後に変数にセット
     }
-    imgFace.src = "image/marioface.png";
+    imgFace.src = "image/ojiface.png";
     loadImageAssets();
 
     startTime = performance.now();
@@ -464,7 +464,7 @@ function loadImageAssets() {
         gameOverImage = img;
         gameState = GAME_PLAY;
     }
-    img.src = "image/mrogameover.jpg";
+    img.src = "image/ojigameover.png";
 }
 
 //ゲームオーバー画像
