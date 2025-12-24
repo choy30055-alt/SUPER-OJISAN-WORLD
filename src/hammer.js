@@ -17,7 +17,7 @@ class HammerBros {
         if (tp === undefined) tp = ITEM_HAMMERBROS;
         this.tp = tp;
         this.throwTimer = 0;     // 投げ間隔用
-        this.throwInterval = 9000; // 斧投げ周期(フレーム)
+        this.throwInterval = 90; // 斧投げ周期(フレーム)
         this.throwRangeX = 400;  // 横距離（px）
         this.throwRangeY = 96;   // 縦距離（px）
         this.landed = false;
@@ -337,3 +337,4 @@ class HammerBrosFlip extends HammerBros { // 演出用：横移動・AI完全停
         vcon.restore();
     }
 }
+
