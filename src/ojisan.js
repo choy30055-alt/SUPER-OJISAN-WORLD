@@ -28,10 +28,7 @@ class Ojisan {
         this.kinoko = 0;
         this.coinGet = false;
         this.fire = 0;
-        //this.coin = 0;
-        //this.coinCount = 0;
-        //this.MAX_COUNT = 5;
-
+        
         this.tookDmgKuri = 0; //負
         this.dealDmgKuri = 0; //勝
         this.tookDmgNoko = 0; //負
@@ -40,13 +37,7 @@ class Ojisan {
         this.dealDmgToge = 0; //勝
         this.tookDmgHammer = 0;  //負
         this.dealDmgHammer = 0; //勝
-        //this.kuriboHit = 0;
-        //this.kuriboAttack = 0;
-        //this.togezoHit = 0;
-        //this.togezoAttack = 0;
-        //this.nokonokoHit = 0;
-        //this.nokonokoAttack = 0;
-
+        
         this.isGoal = false;
         this.goalState = 0;
         this.goalTimer = 0;
@@ -93,13 +84,7 @@ class Ojisan {
         if(this.coinGet) {
             this.coinGet = false;
             score += SCORE_COIN;
-            //coinc++;
-            const coinSound = new Audio("./audio/mrocoin.mp3");
-            coinSound.play();
-            /*if(++this.coinCount >= 15) {
-                hahaSound.play();
-                this.coinCount = 0;
-            } */
+            coinSound.play();    
         } 
 
         //ファイアフラワー：ゲット
@@ -125,22 +110,13 @@ class Ojisan {
             return;
         }
         
-        //クリボ：WIN_踏んだ時
+        //クリボ：WIN_踏んだ時  MYオリジナルロジック
         if(this.dealDmgKuri) {
             if (this.dealDmgKuri === 1) {
                 fumuSound.play();
             }
-            if(this.type == TYPE_BIG) {
-                this.snum =6;
-            } else if(this.type == TYPE_FIRE){
-                this.snum = 262;
-            } else{
-                this.snum = 38; 
-            } 
-            if(this.dirc) this.snum += 48; //左向きは+48を使う
             this.y -= 12;
-            if(this.dirc) {this.x -= 20;
-            } else {this.x += 20;} 
+            if(this.dirc) {this.x -= 20;} else {this.x += 20;} 
             if(++this.dealDmgKuri == 20) {
                this.dealDmgKuri = 0; 
                yaSound.play();
@@ -148,56 +124,34 @@ class Ojisan {
             return;
         }
 
-        //ノコノコ：WIN_踏んだ時
+        //ノコノコ：WIN_踏んだ時　MYオリジナルロジック
         if(this.dealDmgNoko) {
             if (this.dealDmgNoko === 1) {
                 fumuSound.play();
             }
-            if(this.type == TYPE_BIG) {
-                this.snum =6;
-            } else if(this.type == TYPE_FIRE){
-                this.snum = 262;
-            } else{
-                this.snum = 38; 
-            } 
-            if(this.dirc) this.snum += 48; //左向きは+48を使う
             this.y -= 12;
-            if(this.dirc) {this.x -= 20;
-            } else {this.x += 20;} 
+            if(this.dirc) {this.x -= 20;} else {this.x += 20;}
             if(++this.dealDmgNoko == 20) {
                this.dealDmgNoko = 0; 
                yaSound.play();
             }
             return;
         }
-
-        //ハンマーブロス：WIN_踏んだ時
+            
+        //ハンマーブロス：WIN_踏んだ時 
         if(this.dealDmgHammer) {
             if (this.dealDmgHammer === 1) {
                 fumuSound.play();
-                hammerBrosFlip.push(new HammerBrosFlip(134, this.x>>8, (this.y - (16 << 4)) >> 8, 0, 1, ITEM_HAMMERBROS));
-                //hammerBrosFlip.push(new HammerBrosFlip(134, this.x>>4, (this.y>>4)- 16, 0, -10, ITEM_HAMMERBROS));
-                //this.vy = -80;        // ★ 踏みジャンプの本体
-                //this.jump = 1;        // ★ 空中判定
-            }
-            if(this.type == TYPE_BIG) {
-                this.snum =6;
-            } else if(this.type == TYPE_FIRE){
-                this.snum = 262;
-            } else{
-                this.snum = 38; 
-            } 
-            if(this.dirc) this.snum += 48; //左向きは+48を使う
-            this.y -= 12;
-            if(this.dirc) {this.x -= 20;
-            } else {this.x += 20;} 
-            if(++this.dealDmgHammer == 20) {
-               this.dealDmgHammer = 0; 
-               yaSound.play();
+                hammerBrosFlip.push(new HammerBrosFlip(134, this.x>>8, this.y>>8, 0, 0, ITEM_HAMMERBROS));
+                this.vy = -80;        //踏みジャンプの本体
+                this.vx -= 10;
+                this.jump = 1;        //空中判定
+                this.dealDmgHammer = 0; 
+                yaSound.play();
             }
             return;
         }
-
+            
         //クリボ：LOSE_ぶつかった時
         if(this.tookDmgKuri) {
             if (this.tookDmgKuri === 1) {
@@ -711,10 +665,7 @@ class Ojisan {
                 this.alpha = Math.max(0, (this.alpha || 1) - 0.03);
 
                 if (!this.goalAnchor) {
-                    this.goalAnchor = {
-                        x: this.x >> 4,
-                        y: this.y >> 4
-                    };
+                    this.goalAnchor = {x: this.x >> 4, y: this.y >> 4};
                 }
 
                 if (this.scale <= 0 || this.alpha <= 0 || this.goalTimer > 60) {
@@ -844,5 +795,4 @@ class Ojisan {
 
 /*if (this.tookDmgHammer === 1) {
                 hammerBrosFlip.push(new HammerBrosFlip(134, this.x>>8, (this.y - (16 << 4)) >> 8, 0, 1, ITEM_HAMMERBROS));
-
             } */

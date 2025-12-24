@@ -121,7 +121,7 @@ class Togezo {
         }
     }
 
-    //トゲゾーの処理、当たり判定の判定と出現後の
+    //トゲゾーの処理、当たり判定の判定と出現後
     proc_togezo() {
         if(this.checkHit(ojisan)) {
             const collisionType = this.checkEnemyCollision(ojisan);

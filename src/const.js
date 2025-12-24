@@ -30,7 +30,6 @@ const scoreSound = new Audio("./audio/mroroulette.mp3");
 const hammerSound = new Audio("./audio/mrobyun.mp3");
 const hambrsSound = new Audio("./audio/mrohambrs.mp3");
 
-
 const GAME_FPS = 1000 / 60;  //FPS
 const SCREEN_SIZE_W = 256;
 const SCREEN_SIZE_H = 224;

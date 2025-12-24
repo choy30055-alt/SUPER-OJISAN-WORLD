@@ -420,42 +420,6 @@ function fadeInBgm(audio, frames) {
     }, 1000 / 60);
 } 
 
-function gameStart() {  //スタートボタンでゲーム開始
-    document.getElementById("mstart").style.visibility = "hidden";   //スタートボタン非表示
-    if (gameState !== GAME_START) return;
-    startSound1.play();
-    startSound1.addEventListener("ended", function(){
-        startSound2.play();
-    });
-    startSound2.addEventListener("ended", function(){
-        bgmSound.loop = true;
-        bgmSound.play();
-    }); 
-
-    const imgCoin = new Image();
-    imgCoin.onload = () => {
-        coinImage = imgCoin; // 読み込み完了後に変数にセット
-    }
-    imgCoin.src = "image/coin.png";
-
-    const imgFace = new Image();
-    imgFace.onload = () => {
-        faceImage = imgFace; // 読み込み完了後に変数にセット
-    }
-    imgFace.src = "image/ojiface.png";
-    loadImageAssets();
-
-    startTime = performance.now();
-    //hammer.push(new Hammer(116, 380>>4, 100>>4, 7, 0, ITEM_HAMMER)); //380
-
-    ojisan.draw();
-    //enemyDraw();
-    createFlag();
-    createHammerBros();
-    setupOjisanButton();
-    mainLoop();
-}
-
 //画像の事前読み込み
 function loadImageAssets() {
     const img = new Image();
@@ -592,4 +556,40 @@ function showOjisanButton(wx, wy) {
     setTimeout(() => {
         btn.classList.add("float");
     }, 800); // jump の animation 時間と合わせる
+}
+
+function gameStart() {  //スタートボタンでゲーム開始
+    document.getElementById("mstart").style.visibility = "hidden";   //スタートボタン非表示
+    if (gameState !== GAME_START) return;
+    startSound1.play();
+    startSound1.addEventListener("ended", function(){
+        startSound2.play();
+    });
+    startSound2.addEventListener("ended", function(){
+        bgmSound.loop = true;
+        bgmSound.play();
+    }); 
+    const imgCoin = new Image();
+    imgCoin.onload = () => {
+        coinImage = imgCoin; // 読み込み完了後に変数にセット
+    }
+    imgCoin.src = "image/coin.png";
+
+    const imgFace = new Image();
+    imgFace.onload = () => {
+        faceImage = imgFace; // 読み込み完了後に変数にセット
+    }
+    imgFace.src = "image/ojiface.png";
+    
+    loadImageAssets();
+
+    startTime = performance.now();
+    //アイテムの配置
+    ojisan.draw();
+    //enemyDraw();
+    createFlag();
+    createHammerBros();
+    setupOjisanButton();
+    //メインループ
+    mainLoop();
 }

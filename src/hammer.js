@@ -17,14 +17,16 @@ class HammerBros {
         if (tp === undefined) tp = ITEM_HAMMERBROS;
         this.tp = tp;
         this.throwTimer = 0;     // 投げ間隔用
-        this.throwInterval = 15000; // 90フレームごと（約1.5秒）
+        this.throwInterval = 90; // 斧投げ周期(フレーム)
         this.throwRangeX = 400;  // 横距離（px）
         this.throwRangeY = 96;   // 縦距離（px）
         this.landed = false;
         this.jumpTimer = 0;
-        this.jumpInterval = 60000; // 基本周期（1.5秒）
+        this.jumpInterval = 60; // ジャンプ周期(フレーム)
         this.active = false;        // ★ 起動フラグ
-        this.activateRange = 120;  // ★ おじさん接近で起動（px）
+        this.activateRange = 120;  // ★ OJISAN接近で起動（px）
+        //this.deadBy = null; // "stomp" | "fall"
+        //this.wasSupported = false;
     }
 
     update() {
@@ -106,13 +108,27 @@ class HammerBros {
     }
 
     checkCliffBlock() {
-        let footY = (this.y >> 4) + this.h;
-        let footX = (this.x >> 4) + (this.vx > 0 ? this.w : 0);
-        let nextFootX = footX + (this.vx > 0 ? 1 : -1);
-        if (field.isBlock(footX, footY) &&
-            !field.isBlock(nextFootX, footY)) {
-            this.vx *= -1;   // ★ 向きは変えない
+        // ブロック上にいないなら何もしない
+        const footY = (this.y >> 4) + this.h;
+        const footX = (this.x >> 4) + (this.vx > 0 ? this.w : 0);
+        if (!field.isBlock(footX, footY)) return;
+        const dir = (this.vx > 0) ? 1 : -1;
+        let gap = 0;
+        // 同じ高さのブロック天面を最大3マス先まで確認
+        for (let i = 1; i <= 3; i++) {
+            if (!field.isBlock(footX + dir * i, footY)) {
+                gap++;
+            } else {
+                break;
+            }
         }
+        // 3マス以上無い → 折り返す
+        if (gap >= 3) {
+            this.vx *= -1;
+            this.dirc *= -1;
+        }
+        // 1〜2マス無い → そのまま進んで「ブロック外」に出る
+        // → その後は checkFloor が落下を処理する
     }
 
     checkThrowHammer() {
@@ -169,7 +185,7 @@ class HammerBros {
             bottom1 >= top2); //条件に当たればtrue
     }
 
-     checkEnemyCollision(obj) {
+    checkEnemyCollision(obj) {
         if(!this.checkHit(obj)) {
             return "none"; //衝突なし
         }
@@ -179,7 +195,7 @@ class HammerBros {
         }
         return "hit"; // ← 必須
     } 
-
+ 
     //ハンマーブロスの処理、当たり判定の判定と出現後
     proc_HammerBros() {
         if(this.checkHit(ojisan)) {
@@ -187,13 +203,12 @@ class HammerBros {
             if(collisionType === "stomp") {
                 ojisan.dealDmgHammer = 1;
                 this.kill = true;
-                console.log(ojisan.dealDmghammer);
                 return true;
+                }
             }
-        }
-        return false;
+            return false;
     } 
-    
+        
 }
 
 //ハンマーのクラス
@@ -298,13 +313,6 @@ class HammerBrosFlip extends HammerBros { // 演出用：横移動・AI完全停
         if (py > SCREEN_SIZE_H + 64) {
             this.kill = true;
         }
-
-        // ★ 床についたら消す（既存ロジック流用）
-        /*const prevVy = this.vy;
-        this.checkFloor();
-        if (prevVy > 0 && this.vy === 0) {
-            this.kill = true;
-        }*/
         this.acou++;
         this.updateAnim();
     }
@@ -316,7 +324,7 @@ class HammerBrosFlip extends HammerBros { // 演出用：横移動・AI完全停
 
         vcon.save();
         // 中心基準で上下反転描画
-        vcon.translate(px + 8, py + 16);
+        vcon.translate(px + 8, py + 48);
         vcon.scale(1, -1);
 
         let sx = (frame & 15) << 4;  // 上半身
