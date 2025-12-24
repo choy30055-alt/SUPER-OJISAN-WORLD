@@ -75,6 +75,7 @@ const SCORE_BLOCK = 50;
 const SCORE_KURIBO = 100;
 const SCORE_NOKONOKO = 100;
 const SCORE_TOGEZO = 100;
+const SCORE_HAMMERBROS = 3000;
 
 //アイテム関係
 const ITEM_KINO = 1;

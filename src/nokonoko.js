@@ -18,14 +18,14 @@ class Nokonoko {
         this.acou = 0;   
         if(tp == undefined) tp = ITEM_NOKONOKO;
         this.tp = tp;
-        this.scoreValue = 100;
-        this.kickCool = 0;
+        //this.scoreValue = 100;
+        //this.kickCool = 0;
     }
 
     //更新処理
     update() {
         if(this.kill) return;
-        if (this.kickCool > 0) this.kickCool--;
+        //if (this.kickCool > 0) this.kickCool--;
         if(this.proc_nokonoko()) return;
   
         this.checkWall();
@@ -140,12 +140,9 @@ class Nokonoko {
             this.tp = ITEM_URNOKONOKO;  // 甲羅状態へ移行
             this.sp = 132;
             this.vx = 0;
-            score += this.scoreValue; // スコア（1回だけ）
-            this.scoreValue = 0;
             setTimeout(() => {  // 一定時間後に復活
                 this.vx = 10;
                 this.tp = ITEM_NOKONOKO;
-                this.scoreValue = 100;
             }, 9000);
             return true;
         } 

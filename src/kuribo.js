@@ -18,7 +18,7 @@ class Kuribo {
         this.acou = 0;   
         if(tp == undefined) tp = ITEM_KURIBO;
         this.tp = tp;
-        this.scoreValue = 100;
+        //this.scoreValue = 100;
     }
 
     //更新処理
@@ -131,13 +131,10 @@ class Kuribo {
                 this.sp = 98;
                 this.vx = 0;
                 this.kill = false;
-                score += this.scoreValue
-                this.scoreValue = 0;
                 setTimeout(() => {
                     this.kill = true;
                     item.push(new Item(384, this.x>>8, this.y>>8, 0, 0, ITEM_COIN));
                     coinSound.play();
-                    this.scoreValue = 100;
                 }, 1000);
                 return true;
             }

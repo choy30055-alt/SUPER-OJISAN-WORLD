@@ -17,7 +17,7 @@ class HammerBros {
         if (tp === undefined) tp = ITEM_HAMMERBROS;
         this.tp = tp;
         this.throwTimer = 0;     // 投げ間隔用
-        this.throwInterval = 90; // 斧投げ周期(フレーム)
+        this.throwInterval = 9000; // 斧投げ周期(フレーム)
         this.throwRangeX = 400;  // 横距離（px）
         this.throwRangeY = 96;   // 縦距離（px）
         this.landed = false;
@@ -134,7 +134,6 @@ class HammerBros {
     checkThrowHammer() {
         if (this.throwTimer > 0) {
             this.throwTimer--;
-            
             return;
         }
         const dx = Math.abs((this.x >> 4) - (ojisan.x >> 4));
@@ -204,9 +203,9 @@ class HammerBros {
                 ojisan.dealDmgHammer = 1;
                 this.kill = true;
                 return true;
-                }
             }
-            return false;
+        }
+        return false;
     } 
         
 }

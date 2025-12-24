@@ -114,11 +114,14 @@ class Ojisan {
         if(this.dealDmgKuri) {
             if (this.dealDmgKuri === 1) {
                 fumuSound.play();
+                score += SCORE_KURIBO * this.scoreCount;
+                this.scoreCount = 0;    
             }
             this.y -= 12;
             if(this.dirc) {this.x -= 20;} else {this.x += 20;} 
             if(++this.dealDmgKuri == 20) {
-               this.dealDmgKuri = 0; 
+               this.dealDmgKuri = 0;
+               this.scoreCount = 1;
                yaSound.play();
             }
             return;
@@ -128,11 +131,14 @@ class Ojisan {
         if(this.dealDmgNoko) {
             if (this.dealDmgNoko === 1) {
                 fumuSound.play();
+                score += SCORE_NOKONOKO * this.scoreCount;
+                this.scoreCount = 0;    
             }
             this.y -= 12;
             if(this.dirc) {this.x -= 20;} else {this.x += 20;}
             if(++this.dealDmgNoko == 20) {
-               this.dealDmgNoko = 0; 
+               this.dealDmgNoko = 0;
+               this.scoreCount = 1;
                yaSound.play();
             }
             return;
@@ -148,7 +154,10 @@ class Ojisan {
                 this.jump = 1;        //空中判定
                 this.dealDmgHammer = 0; 
                 yaSound.play();
+                score += SCORE_HAMMERBROS * this.scoreCount;
+                this.scoreCount = 0;
             }
+            this.scoreCount = 1;
             return;
         }
             

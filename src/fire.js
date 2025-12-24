@@ -20,7 +20,8 @@ class Fireball {
         this.acou = 0;
         if(tp == undefined) tp = ITEM_FIREB;
         this.tp = tp;
-        this.scoreValue = 100;
+        this.scoreCount = 1;
+        //this.scoreValue = 100;
         //this.creationTime = Date.now();
         //this.lifespan = 3000;
         //this.count = 0;
@@ -138,11 +139,11 @@ class Fireball {
                     this.vy = 0;
                     kuribo[i].kill = true;
                     this.kill = false;
-                    score += this.scoreValue;
-                    this.scoreValue = 0;
+                    score += SCORE_KURIBO * this.scoreCount;
+                    this.scoreCount = 0;
                     setTimeout(() => {
                         this.kill = true;
-                        this.scoreValue = 100;
+                        this.scoreCount = 1;
                     }, 500);
                     item.push(new Item(384, this.x>>8, this.y>>8, 0, 0, ITEM_COIN));
                     coinSound.play();
@@ -163,11 +164,11 @@ class Fireball {
                     this.vy = 0;
                     togezo[i].kill = true;
                     this.kill = false;
-                    score += this.scoreValue;
-                    this.scoreValue = 0;
+                    score += SCORE_TOGEZO * this.scoreCount;
+                    this.scoreCount = 0;
                     setTimeout(() => {
                         this.kill = true;
-                        this.scoreValue = 100;
+                        this.scoreCount = 1;
                     }, 500);
                     item.push(new Item(384, this.x>>8, this.y>>8, 0, 0, ITEM_COIN));
                     coinSound.play();
@@ -188,12 +189,12 @@ class Fireball {
                     this.vy = 0;
                     nokonoko[i].kill = true;
                     this.kill = false;
-                    score += this.scoreValue;
-                    this.scoreValue = 0;
+                    score += SCORE_NOKONOKO * this.scoreCount;
+                    this.scoreCount = 0;
                     setTimeout(() => {
                         this.kill = true;
                         item.push(new Item(384, this.x>>8, this.y>>8, 0, 0, ITEM_COIN));
-                        this.scoreValue = 100;
+                        this.scoreCount = 1;
                     }, 500);
                     break;
                 }

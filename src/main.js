@@ -584,7 +584,7 @@ function gameStart() {  //スタートボタンでゲーム開始
     loadImageAssets();
 
     startTime = performance.now();
-    //アイテムの配置
+    //アイテム・敵の配置
     ojisan.draw();
     //enemyDraw();
     createFlag();
