@@ -148,7 +148,7 @@ class Ojisan {
                 this.vx -= 10;
                 this.jump = 1;        //空中判定
                 this.dealDmgHammer = 0; 
-                yahuSound.play();
+                yafuSound.play();
                 score += SCORE_HAMMERBROS * this.scoreCount;
                 this.scoreCount = 0;
             }
