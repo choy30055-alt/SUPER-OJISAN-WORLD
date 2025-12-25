@@ -153,7 +153,7 @@ class Ojisan {
                 this.vx -= 10;
                 this.jump = 1;        //空中判定
                 this.dealDmgHammer = 0; 
-                yaSound.play();
+                yafuSound.play();
                 score += SCORE_HAMMERBROS * this.scoreCount;
                 this.scoreCount = 0;
             }
@@ -805,3 +805,4 @@ class Ojisan {
 /*if (this.tookDmgHammer === 1) {
                 hammerBrosFlip.push(new HammerBrosFlip(134, this.x>>8, (this.y - (16 << 4)) >> 8, 0, 1, ITEM_HAMMERBROS));
             } */
+
