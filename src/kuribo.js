@@ -18,13 +18,11 @@ class Kuribo {
         this.acou = 0;   
         if(tp == undefined) tp = ITEM_KURIBO;
         this.tp = tp;
-        //this.scoreValue = 100;
     }
 
     //更新処理
     update() {
         if(this.kill) return;
-        //if(ojisan.kuribo) return;
         if(this.proc_kuribo()) return;
   
         this.checkWall();

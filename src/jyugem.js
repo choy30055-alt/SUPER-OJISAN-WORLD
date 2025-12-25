@@ -15,7 +15,6 @@ class Jyugem {
         this.anim = 0;
         this.snum = 0;
         this.kill = false;
-        //this.count = 0;
         this.acou = 0;   
         if(tp == undefined) tp = ITEM_JYUGEM;
         this.tp = tp;
@@ -78,6 +77,4 @@ class Jyugem {
             }  
         }      
     }
-
-    
 }

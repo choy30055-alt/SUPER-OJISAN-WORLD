@@ -49,11 +49,11 @@ const ANIME_BRAKE = 4;
 const ANIME_JUMP = 8;
 const ANIME_FIRE = 16;
 const ANIME_FLAG = 18;
-
 const TYPE_MINI = 1;
 const TYPE_BIG = 2;
 const TYPE_FIRE = 3;
 
+//ゲームステート
 const GAME_START = 0;
 const GAME_PLAY = 1;
 const GAME_OVER = 2;
@@ -69,6 +69,7 @@ const MAX_SPEED = 32;
 const GROUND_LEVEL = 2820;  //2820 2720
 
 //スコア関係
+const LIFE_POINT = 10;
 const SCORE_COIN = 100;
 const SCORE_ITEM = 1000;
 const SCORE_BLOCK = 50;
@@ -105,10 +106,6 @@ const BL_HATENA_A = 368;
 const BL_HATENA_B = 496;
 const BL_TRANSP_A = 499;
 const BL_POLE = 500;
-//const BL_FLAG_A = 493;
-//const BL_CASTLE = 475;
-//const BL_CASTLE_GATE = 491;
-//const FLAG_SPRITE = 493;
 
 const GOAL_GRAB   = 0;   // 旗を掴む
 const GOAL_FALL   = 1;   // 一緒に落下

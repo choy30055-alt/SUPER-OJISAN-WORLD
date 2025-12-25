@@ -49,7 +49,6 @@ constructor(x, y, vx, vy, tp) {
     this.vx = vx; 
     this.vy = vy;
     this.tp = tp;
-    //this.color = color;
     this.state = 0;       // 0:上昇, 1:爆発
     this.kill = false;
     this.trail = [];

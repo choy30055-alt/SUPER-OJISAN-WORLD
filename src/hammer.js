@@ -25,8 +25,6 @@ class HammerBros {
         this.jumpInterval = 60; // ジャンプ周期(フレーム)
         this.active = false;        // ★ 起動フラグ
         this.activateRange = 120;  // ★ OJISAN接近で起動（px）
-        //this.deadBy = null; // "stomp" | "fall"
-        //this.wasSupported = false;
     }
 
     update() {
@@ -55,7 +53,7 @@ class HammerBros {
         if (this.vy < AIR_RESIST) this.vy += GRAVITY;
         this.x += this.vx;
         this.y += this.vy;
-         this.spBase = (this.dirc === -1) ? 166 : 134; // ★ 向き → 見た目（ここだけ）
+        this.spBase = (this.dirc === -1) ? 166 : 134; // ★ 向き → 見た目（ここだけ）
         this.checkFloor();
         this.checkCliffBlock();
         this.checkWall();
@@ -303,10 +301,8 @@ class HammerBrosFlip extends HammerBros { // 演出用：横移動・AI完全停
     }
 
     update() {
-        
         if (this.vy < AIR_RESIST) this.vy += GRAVITY * 0.12; // ★ ゆっくり落下だけ
         this.y += this.vy;
-
         // ★ 画面下に完全に出たら消す
         const py = (this.y >> 4) - field.scy;
         if (py > SCREEN_SIZE_H + 64) {
@@ -337,4 +333,3 @@ class HammerBrosFlip extends HammerBros { // 演出用：横移動・AI完全停
         vcon.restore();
     }
 }
-

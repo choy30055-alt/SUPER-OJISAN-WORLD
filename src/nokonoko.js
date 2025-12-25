@@ -18,8 +18,6 @@ class Nokonoko {
         this.acou = 0;   
         if(tp == undefined) tp = ITEM_NOKONOKO;
         this.tp = tp;
-        //this.scoreValue = 100;
-        //this.kickCool = 0;
     }
 
     //更新処理

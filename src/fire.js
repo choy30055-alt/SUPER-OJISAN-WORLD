@@ -21,11 +21,6 @@ class Fireball {
         if(tp == undefined) tp = ITEM_FIREB;
         this.tp = tp;
         this.scoreCount = 1;
-        //this.scoreValue = 100;
-        //this.creationTime = Date.now();
-        //this.lifespan = 3000;
-        //this.count = 0;
-         //this.lifeTime = 3000; 
     }
 
     //更新処理
@@ -47,10 +42,6 @@ class Fireball {
             this.kill = true;
         }
         
-        /*for(let i = 0; i < this.length; i++) {
-            this[i].kill = true;
-        }*/
-
         this.checkWall();
         this.checkFloor();
         //this.checkCliff();
@@ -210,8 +201,4 @@ class Fireball {
             this.sp = 203 + ((this.acou / 3) % 4);
         }
     }
-
-    /*isAlive() {
-        return Date.now() - this.creationTime <= this.lifespan;
-    }*/
 }

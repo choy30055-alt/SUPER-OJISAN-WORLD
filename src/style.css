@@ -2,9 +2,7 @@
 /* ---------- style.css（縦はキャンバス上、コントローラー左右下） ---------- */
 /* ===== タッチ無効化 ===== */
 body {
-  touch-action: manipulation;
   touch-action: none;
-  
 }
 
 /* ===== 基本 ===== */

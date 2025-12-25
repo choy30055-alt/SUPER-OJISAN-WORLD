@@ -3,16 +3,12 @@
 //
 let vcan = document.createElement("canvas");
 let vcon = vcan.getContext("2d");
-
 let can = document.getElementById("can");
 let con = can.getContext("2d");
-
 vcan.width = SCREEN_SIZE_W;
 vcan.height = SCREEN_SIZE_H;
-
 can.width = SCREEN_SIZE_W * 2;
 can.height = SCREEN_SIZE_H * 2;
-
 con.mozimageSmoothingEnabled = false;
 con.msimageSmoothingEnabled = false;
 con.webkitimageSmoothingEnabled = false;
@@ -55,13 +51,13 @@ let hammerBrosFlip = [];
 
 //スコア等表示オブジェクト
 let score = 0;
+let lifePoint = LIFE_POINT;
 let coinc = 0;
 let scorepop = [];
 //let lifePoint = 4;
 
 //ゲームステート
 let gameState = GAME_START;
-//let gameState = GAME_PLAYING;
 let gameOverImage = null;
 let isGoalNear = false;
 
@@ -118,7 +114,6 @@ function update() {
 
     //マップの更新
     field.update();
-
     //アイテムの更新
     updateObj(block);
     updateObj(item);
@@ -134,7 +129,6 @@ function update() {
     updateObj(hammerBros);
     updateObj(hammer);
     updateObj(hammerBrosFlip);
-
     //おじさんの更新
     ojisan.update();
 }
@@ -148,7 +142,6 @@ function draw() {
     
     //マップを表示
     field.draw();
-
     //アイテムを表示
     drawObj(block);
     drawObj(item);
@@ -164,7 +157,6 @@ function draw() {
     drawObj(hammerBros);
     drawObj(hammer);
     drawObj(hammerBrosFlip);
-
     //おじさんを表示
     ojisan.draw();
 
@@ -191,7 +183,21 @@ function draw() {
     if (faceImage) { // 画像が読み込まれていれば描画する
         con.drawImage(faceImage, 143, 11, 24, 24);
     }
-    con.fillText("x " + ojisan.lifePoint, 171, 30);
+    con.fillText("x " + lifePoint, 171, 30);
+}
+
+//スコアを6桁表示
+function fomatScore(score) {
+    const isNegative = score < 0;
+    const absoluteScore = Math.abs(score);
+    const paddedNumber = String(absoluteScore). padStart(6, '0');
+    let formatted;
+    if(isNegative) {
+        formatted = `-${paddedNumber}`;
+    } else {
+        formatted = ` ${paddedNumber}`;
+    }
+    return formatted;
 }
 
 function drawSprite(snum, x, y) {
@@ -212,20 +218,6 @@ function updateObj(obj) {
         obj[i].update();
         if(obj[i].kill) obj.splice(i, 1);
     }
-}
-
-//スコアを6桁表示
-function fomatScore(score) {
-    const isNegative = score < 0;
-    const absoluteScore = Math.abs(score);
-    const paddedNumber = String(absoluteScore). padStart(6, '0');
-    let formatted;
-    if(isNegative) {
-        formatted = `-${paddedNumber}`;
-    } else {
-        formatted = ` ${paddedNumber}`;
-    }
-    return formatted;
 }
 
 function isBlock(tx, ty) {
@@ -381,7 +373,7 @@ function enemyDraw() {
     jyugem.push(new Jyugem(107, 188, 4, -11, 0, ITEM_JYUGEM));
 }
 
-//ゴール直前サウンド切り替え
+//BGM切り替え
 function startGoalMusicFade() {
     fadeOutBgm(bgmSound, 60); //60フレームでフェード
     fadeInBgm(goalSound, 60);
@@ -451,10 +443,9 @@ function drawGameOverImage() {
     con.fillStyle = "white";
     con.textAlign = 'center'; // 中央揃えに設定
 
-    const formattedScore = fomatScore(score);
-    // 画像の下にスコアを表示
-    con.fillText("SCORE:" + formattedScore, can.width / 2, (can.height / 2) + 170); 
-    // さらに下にタイムを表示
+    const formattedScore = fomatScore(score);  // 画像の下にスコアを表示
+    con.fillText("SCORE:" + formattedScore, can.width / 2, (can.height / 2) + 170); // さらに下にタイムを表示
+    
     const coinct = String(coinc).padStart(6, '0');
     con.fillText("COIN : " + coinct, can.width / 2, (can.height / 2) + 200); 
     con.textAlign = 'left'; // textAlignをデフォルト（左揃え）に戻す
