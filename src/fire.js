@@ -217,8 +217,7 @@ class Fireball {
                     break;
                 }
             }
-        }
-        
+        }  
     }
 
     updateAnim() {

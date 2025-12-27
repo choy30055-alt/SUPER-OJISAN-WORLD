@@ -24,7 +24,7 @@ class HammerBros {
         this.jumpTimer = 0;
         this.jumpInterval = 60; // ジャンプ周期(フレーム)
         this.active = false;        // ★ 起動フラグ
-        this.activateRange = 120;  // ★ OJISAN接近で起動（px）
+        this.activateRange = 140;  // ★ OJISAN接近で起動（px）
     }
 
     update() {
