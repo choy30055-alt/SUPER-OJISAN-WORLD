@@ -57,16 +57,13 @@ class HammerBros {
         this.checkFloor();
         this.checkCliffBlock();
         this.checkWall();
-        this.checkThrowHammer();
+        this.checkThrowHammer();     
+        this.avoidApproach();
+        this.avoidFireball();
         this.checkRandomJump();
         this.proc_HammerBros();
         this.acou++;
         this.updateAnim();
-    }
-
-    updateAnim() {
-        const anim = ((this.acou / 10) | 0) % 3;
-        this.sp = this.spBase + anim;
     }
 
     draw() {
@@ -80,6 +77,11 @@ class HammerBros {
         sx = (f2 & 15) << 4;
         sy = (f2 >> 4) << 4;
         vcon.drawImage(chImg, sx, sy, 16, 16, px, py + 16, 16, 16);
+    }
+
+    updateAnim() {
+        const anim = ((this.acou / 10) | 0) % 3;
+        this.sp = this.spBase + anim;
     }
 
     checkFloor() {
@@ -125,8 +127,7 @@ class HammerBros {
             this.vx *= -1;
             this.dirc *= -1;
         }
-        // 1〜2マス無い → そのまま進んで「ブロック外」に出る
-        // → その後は checkFloor が落下を処理する
+        // 1〜2マス無い → そのまま進んで「ブロック外」に出る  → その後は checkFloor が落下を処理する
     }
 
     checkThrowHammer() {
@@ -175,7 +176,6 @@ class HammerBros {
         let right2 = left2 + obj.w  - 4; 
         let top2 = (obj.y>>4 ) + 5 + obj.ay;
         let bottom2 = top2 + obj.h  - 7;
-
         return(left1 <= right2 &&
             right1 >= left2 &&
             top1 <= bottom2 &&
@@ -205,7 +205,42 @@ class HammerBros {
         }
         return false;
     } 
-        
+    
+    //ランダム回避（ojisan接近初回回避）
+    avoidApproach() {
+        if (this.vy < 0) return;
+        const dx = Math.abs((ojisan.x >> 4) - (this.x >> 4));
+        const dy = Math.abs((ojisan.y >> 4) - (this.y >> 4));
+        const approaching = (dx < 50 && this.prevDx >= 50); //接近発動間隔
+        if (approaching && dy < 24) {
+            if (Math.random() < 1.00) { //ランダム回避確率
+                this.vy = -90;
+            }
+        }
+        this.prevDx = dx;
+    }
+    // ランダム回避（ファイアボール接近初回回避）
+    avoidFireball() {
+        if (this.vy < 0) return;
+        for (const fb of fireball) {
+            if (fb.kill) continue;
+            const dx = (fb.x >> 4) - (this.x >> 4);
+            const dy = Math.abs((fb.y >> 4) - (this.y >> 4));
+            if (this.dirc * dx < 0) continue; // ★ 正面から近づいてくる弾だけ
+            const adx = Math.abs(dx);
+            // 弾が危険距離に入った瞬間
+            const entering =
+                (adx < 72 && (!fb.prevDx || fb.prevDx >= 72)); //接近発動間隔
+            if (entering && dy < 24) {
+                if (Math.random() < 0.0) {  //ランダム回避確率
+                    this.vy = -90;
+                    break;
+                }
+            }
+            fb.prevDx = adx; // 弾ごとの前回距離を保存
+        }
+    }
+
 }
 
 //ハンマーのクラス
@@ -270,7 +305,6 @@ class Hammer {
         let right2 = left2 + obj.w  - 4; 
         let top2 = (obj.y>>4 )      + 5 + obj.ay;
         let bottom2 = top2 + obj.h  - 7;
-
         return(left1 <= right2 &&
             right1 >= left2 &&
             top1 <= bottom2 &&
@@ -316,16 +350,13 @@ class HammerBrosFlip extends HammerBros { // 演出用：横移動・AI完全停
         const frame = this.sp;
         const px = (this.x >> 4) - field.scx;
         const py = (this.y >> 4) - field.scy;
-
         vcon.save();
         // 中心基準で上下反転描画
         vcon.translate(px + 8, py + 48);
         vcon.scale(1, -1);
-
         let sx = (frame & 15) << 4;  // 上半身
         let sy = (frame >> 4) << 4;
         vcon.drawImage(chImg, sx, sy, 16, 16, -8, -16, 16, 16);
-
         const f2 = frame + 16;   // 下半身
         sx = (f2 & 15) << 4;
         sy = (f2 >> 4) << 4;

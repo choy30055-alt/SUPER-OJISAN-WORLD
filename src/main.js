@@ -13,27 +13,21 @@ con.mozimageSmoothingEnabled = false;
 con.msimageSmoothingEnabled = false;
 con.webkitimageSmoothingEnabled = false;
 con.imageSmoothingEnabled = false;
-
 //フレームレート維持
 let frameCount = 0;
 let startTime;
-
+//スプライトイメージ読込
 let chImg = new Image();
 chImg.src ="image/spritemario.png";
-
 //コイン画像用の変数を宣言⭐︎
 let coinImage = null;
 let faceImage = null;
-
 //キーボード
 let keyb = {};
-
 //おじさんを作る
 let ojisan = new Ojisan;
-
 //フィールドを作る
 let field = new Field();
-
 //オブジェクトの配列
 let block = [];
 let item = [];
@@ -48,19 +42,15 @@ let hanabi = [];
 let hammerBros = [];
 let hammer = [];
 let hammerBrosFlip = [];
-
 //スコア等表示オブジェクト
 let score = 0;
 let lifePoint = LIFE_POINT;
 let coinc = 0;
 let scorepop = [];
-//let lifePoint = 4;
-
 //ゲームステート
 let gameState = GAME_START;
 let gameOverImage = null;
 let isGoalNear = false;
-
 //タイマー
 let timeLeft = 300;
 
@@ -99,19 +89,19 @@ function mainLoop() {
         drawGameOverImage();
     }
 
-    //ゴールサウンドへの切替
+    //BGMサウンドの切替
     const STAGE_WIDTH = (FIELD_SIZE_W * 16) << 4; 
-    if (ojisan.x > STAGE_WIDTH * 0.5 && !isGoalNear) {
+    if (ojisan.x > STAGE_WIDTH * 0.7 && !isGoalNear) {
         startGoalMusicFade();
         isGoalNear = true;
     }
+
     updateFaceBtnPosition();
     requestAnimationFrame(mainLoop);
 }
 
 //更新処理
 function update() {
-
     //マップの更新
     field.update();
     //アイテムの更新
@@ -159,10 +149,8 @@ function draw() {
     drawObj(hammerBrosFlip);
     //おじさんを表示
     ojisan.draw();
-
     //仮想画面から実画面へ拡大転送
-    con.drawImage(vcan, 0, 0, SCREEN_SIZE_W, SCREEN_SIZE_H,
-                  0, 0, SCREEN_SIZE_W * 2, SCREEN_SIZE_H * 2);
+    con.drawImage(vcan, 0, 0, SCREEN_SIZE_W, SCREEN_SIZE_H, 0, 0, SCREEN_SIZE_W * 2, SCREEN_SIZE_H * 2);
     //スコア情報
     const fomattedScore = fomatScore(score);
     con.font = '20px "Press Start 2P", monospace';
@@ -174,19 +162,17 @@ function draw() {
     con.fillText("TIME", 430, 30);
     const formattedTime = String(timeLeft).padStart(3, '0');
     con.fillText(formattedTime, 440, 50); 
-    
     if (coinImage) { // 画像が読み込まれていれば描画する
         con.drawImage(coinImage, 147, 34, 16, 18);
     }
     con.fillText("x " + coinc, 171, 50);
-   
     if (faceImage) { // 画像が読み込まれていれば描画する
         con.drawImage(faceImage, 143, 11, 24, 24);
     }
     con.fillText("x " + lifePoint, 171, 30);
 }
 
-//スコアを6桁表示
+//スコアの6桁表示
 function fomatScore(score) {
     const isNegative = score < 0;
     const absoluteScore = Math.abs(score);
@@ -292,7 +278,6 @@ document.addEventListener('keydown', (e) => {
     if(e.key == 's') field.scx++;
     if(e.key == 'c') keyb.FBBUTTON = true;
 })
-
 //キーボードが離されたときに呼ばれる
 document.addEventListener('keyup', (e) => {
     if(e.key == 'ArrowLeft') keyb.Left = false;
@@ -301,7 +286,6 @@ document.addEventListener('keyup', (e) => {
     if(e.key == 'x') keyb.ABUTTON = false;
     //if(e.key == 'c') keyb.FBBUTTON = false;
 })
-
 const leftb = document.getElementById("LeftB");
 const rightb = document.getElementById("RightB");
 const abtn = document.getElementById("Abtn");
@@ -323,7 +307,6 @@ bbtn.addEventListener('touchstart', (e) => {
     e.preventDefault();  
     keyb.FBBUTTON = true;
 })
-
 //タッチが離されたときに呼ばれる
 leftb.addEventListener('touchend', (e) => {
     keyb.Left = false; 
@@ -346,11 +329,14 @@ abtn.addEventListener('touchend', (e) => {
 function enemyDraw() {
     kuribo.push(new Kuribo(163, 16, 0, 12, 0, ITEM_KURIBO));
     kuribo.push(new Kuribo(163, 24, 0, 12, 0, ITEM_KURIBO));
+    kuribo.push(new Kuribo(163, 32, 0, 12, 0, ITEM_KURIBO));
     kuribo.push(new Kuribo(163, 40, 0, 12, 0, ITEM_KURIBO));
     kuribo.push(new Kuribo(163, 54, 0, 12, 0, ITEM_KURIBO));
     kuribo.push(new Kuribo(163, 63, 0, 12, 0, ITEM_KURIBO));
     kuribo.push(new Kuribo(163, 78, 0, 12, 0, ITEM_KURIBO));
+    kuribo.push(new Kuribo(163, 90, 0, 12, 0, ITEM_KURIBO));
     kuribo.push(new Kuribo(163, 102, 0, 12, 0, ITEM_KURIBO));
+    kuribo.push(new Kuribo(163, 140, 0, 12, 0, ITEM_KURIBO));
     kuribo.push(new Kuribo(163, 160, 0, 12, 0, ITEM_KURIBO));
     kuribo.push(new Kuribo(163, 162, 0, 12, 0, ITEM_KURIBO));
     nokonoko.push(new Nokonoko(163, 14, 0, 8, 0, ITEM_NOKONOKO));
@@ -359,8 +345,10 @@ function enemyDraw() {
     nokonoko.push(new Nokonoko(163, 60, 0, 8, 0, ITEM_NOKONOKO));
     nokonoko.push(new Nokonoko(163, 78, 0, 8, 0, ITEM_NOKONOKO));
     nokonoko.push(new Nokonoko(163, 96, 0, 8, 0, ITEM_NOKONOKO));
+    nokonoko.push(new Nokonoko(163, 103, 0, 8, 0, ITEM_NOKONOKO));
     nokonoko.push(new Nokonoko(163, 112, 0, 8, 0, ITEM_NOKONOKO));
     nokonoko.push(new Nokonoko(163, 128, 0, 8, 0, ITEM_NOKONOKO));
+    nokonoko.push(new Nokonoko(163, 144, 0, 8, 0, ITEM_NOKONOKO));
     nokonoko.push(new Nokonoko(163, 160, 0, 8, 0, ITEM_NOKONOKO));
     nokonoko.push(new Nokonoko(163, 162, 0, 8, 0, ITEM_NOKONOKO));
     jyugem.push(new Jyugem(107, 1, 1, 11, 0, ITEM_JYUGEM));
@@ -373,7 +361,7 @@ function enemyDraw() {
     jyugem.push(new Jyugem(107, 188, 4, -11, 0, ITEM_JYUGEM));
 }
 
-//BGM切り替え
+//BGMの切り替え
 function startGoalMusicFade() {
     fadeOutBgm(bgmSound, 60); //60フレームでフェード
     fadeInBgm(goalSound, 60);
@@ -428,7 +416,7 @@ function drawGameOverImage() {
     // 画面を一度クリアするか、黒いオーバーレイをかける
     con.fillStyle = "#000000";
     con.fillRect(0, 0, can.width, can.height);
-
+    
     // ゲームオーバー画像を描画
     if (gameOverImage) {
         const imgW = gameOverImage.width;
@@ -442,10 +430,8 @@ function drawGameOverImage() {
     con.font = '30px "Press Start 2P", monospace';
     con.fillStyle = "white";
     con.textAlign = 'center'; // 中央揃えに設定
-
     const formattedScore = fomatScore(score);  // 画像の下にスコアを表示
     con.fillText("SCORE:" + formattedScore, can.width / 2, (can.height / 2) + 170); // さらに下にタイムを表示
-    
     const coinct = String(coinc).padStart(6, '0');
     con.fillText("COIN : " + coinct, can.width / 2, (can.height / 2) + 200); 
     con.textAlign = 'left'; // textAlignをデフォルト（左揃え）に戻す
@@ -498,12 +484,10 @@ function updateFaceBtnPosition() {
 function setupOjisanButton() {
     const overlay = document.getElementById("gameOverlay");
     if (!overlay) return;
-
     if (!document.getElementById("ojisanBtn")) {
         const obtn = document.createElement("button");
         obtn.id = "ojisanBtn";
         overlay.appendChild(obtn);
-
         obtn.addEventListener("click", () => {
             location.reload(true);
         });
@@ -526,23 +510,19 @@ function getOjisanScreenPos() {  // ===== Ojisan UI 用：画面座標取得 ===
 function showOjisanButton(wx, wy) {
     const btn = document.getElementById("ojisanBtn");
     if (!btn) return;
-
     const rect = can.getBoundingClientRect();
     const sx = wx - field.scx; // ワールド → 画面（内部座標）
     const sy = wy - field.scy;
     const scaleX = rect.width  / can.width;  // 内部 → CSS
     const scaleY = rect.height / can.height;
-
     btn.style.left = rect.left + sx * scaleX + "px";
     btn.style.top  = rect.top  + sy * scaleY + "px";
     btn.style.display = "block";
-
     // ジャンプ演出
     btn.classList.remove("jump");
     void btn.offsetWidth;
     btn.classList.add("jump");
     hahaSound.play();
-
     // ★ ジャンプが終わったらふわふわ開始
     setTimeout(() => {
         btn.classList.add("float");
@@ -565,19 +545,18 @@ function gameStart() {  //スタートボタンでゲーム開始
         coinImage = imgCoin; // 読み込み完了後に変数にセット
     }
     imgCoin.src = "image/coin.png";
-
     const imgFace = new Image();
     imgFace.onload = () => {
         faceImage = imgFace; // 読み込み完了後に変数にセット
     }
     imgFace.src = "image/ojiface.png";
-    
+
     loadImageAssets();
 
     startTime = performance.now();
     //アイテム・敵の配置
     ojisan.draw();
-    //enemyDraw();
+    enemyDraw();
     createFlag();
     createHammerBros();
     setupOjisanButton();

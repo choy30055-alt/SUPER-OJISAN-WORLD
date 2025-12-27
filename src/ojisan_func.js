@@ -193,7 +193,6 @@
     };
 
 //＊＊＊移動・行動界隈＊＊＊
-
     //ジャンプ処理
     Ojisan.prototype.updateJump = function() {
         //ジャンプ

@@ -26,10 +26,10 @@ class Fireball {
     //更新処理
     update() {
         if(this.kill) return;
-        if(this.proc_firekuribo()) return;
-        if(this.proc_firetogezo()) return;
-        if(this.proc_firenokonoko()) return;
- 
+        if(this.proc_fireKuribo()) return;
+        if(this.proc_fireTogezo()) return;
+        if(this.proc_fireNokonoko()) return;
+        if(this.proc_fireHammerBros()) return;
         //重力の影響
         this.vy += this.gravity;
 
@@ -119,7 +119,7 @@ class Fireball {
         }
     }
 
-    proc_firekuribo(){
+    proc_fireKuribo(){
         //クリボがヒットした時の処理(配列内のクリボを総当たりで当たり判定)
         for(let i = 0; i < kuribo.length; i++) { //ku
             if(!kuribo[i].kill) {
@@ -144,7 +144,7 @@ class Fireball {
         }
     }
 
-    proc_firetogezo(){
+    proc_fireTogezo(){
         //トゲゾーがヒットした時の処理(配列内のトゲゾーを総当たりで当たり判定)
         for(let i =0; i < togezo.length; i++) { //ku
             if(!togezo[i].kill) {
@@ -169,7 +169,7 @@ class Fireball {
         }
     }
 
-    proc_firenokonoko(){
+    proc_fireNokonoko(){
         //ノコノコがヒットした時の処理(配列内を総当たりで当たり判定)
         for(let i =0; i < nokonoko.length; i++) { //ku
             if(!nokonoko[i].kill) {
@@ -191,6 +191,34 @@ class Fireball {
                 }
             }
         }
+
+    }
+
+    proc_fireHammerBros(){
+        //ハンマーブロスがヒットした時の処理(配列内を総当たりで当たり判定)
+        for(let i =0; i < hammerBros.length; i++) {
+            if(!hammerBros[i].kill) {
+                let bx = 1;
+                if(hammerBros[i].vx < 0){bx = -1;} else {bx = 1;}
+                if(this.checkHit(hammerBros[i])) {
+                    firehitSound.play();
+                    this.tp = ITEM_EXPL 
+                    this.vx = 0;
+                    this.vy = 0;
+                    hammerBros[i].kill = true;
+                    this.kill = false;
+                    score += SCORE_HAMMERBROS * this.scoreCount;
+                    this.scoreCount = 0;
+                    setTimeout(() => {
+                        this.kill = true;
+                        hammerBrosFlip.push(new HammerBrosFlip(134, (this.x + bx)>>8, (this.y>>8)-2, 0, 0, ITEM_HAMMERBROS));
+                        this.scoreCount = 1;
+                    }, 500);
+                    break;
+                }
+            }
+        }
+        
     }
 
     updateAnim() {

@@ -21,7 +21,7 @@ class Ojisan {
         this.scoreValue = 100;
         this.loseValue = -100;
         this.scoreCount = 1;
-        //this.reload = 0;
+        this.reload = 0;
         this.kinoko = 0;
         this.coinGet = false;
         this.fire = 0;
@@ -62,7 +62,7 @@ class Ojisan {
                 this.snum = anim[this.kinoko>>2];
                 this.h = this.snum == 32?16:32;
                 if(this.dirc) this.snum += 48; //左向きは+48を使う
-                if(++this.kinoko == 40)/*anim.length<<4*/ {
+                if(++this.kinoko == 40){
                     yafuSound.play();
                     this.type = TYPE_BIG;
                     this.ay = 0;
@@ -79,7 +79,8 @@ class Ojisan {
         if(this.coinGet) {
             this.coinGet = false;
             score += SCORE_COIN;
-            coinSound.play();    
+            const coinSound = new Audio("./audio/mrocoin.mp3"); //連続再生
+            coinSound.play();   
         } 
 
         //ファイアフラワー：ゲット
@@ -253,8 +254,7 @@ class Ojisan {
         this.updateWalk();
         this.shootFireball();
         this.checkGameOver();
-        //if(this.reload > 0) this.reload--;    
-        
+        if(this.reload > 0) this.reload--; //ファイアボール用カウント   
         //重力・空気抵抗
         if(this.vy < AIR_RESIST) this.vy += GRAVITY; //重力空気抵抗
         //横の壁のチェック
