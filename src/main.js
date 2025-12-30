@@ -53,6 +53,9 @@ let gameOverImage = null;
 let isGoalNear = false;
 //タイマー
 let timeLeft = 300;
+//STAGE SELECT
+let selectedStage = "NORMAL";   // 初期選択
+let isSelectingStage = true;    // タイトル画面中かどうか
 
 //メインループ
 function mainLoop() {
@@ -208,7 +211,7 @@ function updateObj(obj) {
 
 function isBlock(tx, ty) {
     if (tx < 0 || ty < 0 || tx >= FIELD_SIZE_W || ty >= FIELD_SIZE_H) return true;
-    const t = fieldData[ty * FIELD_SIZE_W + tx];
+    const t = field.fieldData[ty * FIELD_SIZE_W + tx];
     return (
         (t >= 1 && t <= 99) ||     // 地面系
         (t >= 140 && t <= 149) ||  // 土管
@@ -218,8 +221,8 @@ function isBlock(tx, ty) {
 
 function findPole() {
     let best = null;
-    for (let i = 0; i < fieldData.length; i++) {
-        if (fieldData[i] === 500) {
+    for (let i = 0; i < field.fieldData.length; i++) {
+        if (field.fieldData[i] === 500) {
             let x = i % FIELD_SIZE_W;
             let y = Math.floor(i / FIELD_SIZE_W);
             if (!best || x < best.x) {   // 一番左（x が最小）の500 を採用
@@ -241,8 +244,8 @@ function createFlag() {
 
 function findBlock() {
     let best = null;
-    for (let i = 0; i < fieldData.length; i++) {
-        if (fieldData[i] === 372) {
+    for (let i = 0; i < field.fieldData.length; i++) {
+        if (field.fieldData[i] === 372) {
             let x = i % FIELD_SIZE_W;
             let y = Math.floor(i / FIELD_SIZE_W);
             if (!best || x < best.x) {   // 一番左（x が最小）の500 を採用
@@ -530,12 +533,21 @@ function showOjisanButton(wx, wy) {
 }
 
 function gameStart() {  //スタートボタンでゲーム開始
+    // ===== タイトル画面を消す =====
+    const titleMenu = document.getElementById("titleMenuRoot");
+    if (titleMenu) titleMenu.style.display = "none";
+    isSelectingStage = false;
+    // ===== マップ切り替え =====
+    field.loadMap(MAPS[selectedStage]);
+    // === マップ固有 update をセット ===
+    const funcName = MAPS[selectedStage].updateMapFunc;
+    ojisan.updateMap = ojisan[funcName];
     document.getElementById("mstart").style.visibility = "hidden";   //スタートボタン非表示
     if (gameState !== GAME_START) return;
-    startSound1.play();
-    startSound1.addEventListener("ended", function(){
+    //startSound1.play();
+    //startSound1.addEventListener("ended", function(){
         startSound2.play();
-    });
+    //});
     startSound2.addEventListener("ended", function(){
         bgmSound.loop = true;
         bgmSound.play();
@@ -556,10 +568,47 @@ function gameStart() {  //スタートボタンでゲーム開始
     startTime = performance.now();
     //アイテム・敵の配置
     ojisan.draw();
-    enemyDraw();
+    //enemyDraw();
     createFlag();
     createHammerBros();
     setupOjisanButton();
     //メインループ
     mainLoop();
 }
+
+const stageCells = document.querySelectorAll(".titleStageCell");
+function updateStageSelectUI() {
+    stageCells.forEach(cell => {
+        if (cell.dataset.stage === selectedStage) {
+            cell.classList.add("is-selected");
+        } else {
+            cell.classList.remove("is-selected");
+        }
+    });
+}
+
+// ===== ステージセレクト：クリック処理 =====
+stageCells.forEach(cell => {
+    const stage = cell.dataset.stage;
+    if (!stage) return; // ??? は無視
+    cell.addEventListener("pointerdown", () => {
+    // すでに選択中なら無視（多重防止）
+    if (selectedStage === stage && !isSelectingStage) return;
+    // 選択更新
+    selectedStage = stage;
+    updateStageSelectUI();
+    // SE 再生
+    startSound1.play();
+    // 二重入力防止
+    isSelectingStage = false;
+    // 一拍おいてスタート
+    setTimeout(() => {
+        gameStart();
+    }, 2000);   // 300〜500ms 好みで調整 
+    });
+});
+
+// 初期点滅
+updateStageSelectUI();
+
+

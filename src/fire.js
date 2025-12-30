@@ -47,7 +47,7 @@ class Fireball {
         //this.checkCliff();
 
         this.acou++;  //アニメ用のカウンタ
-        if(Math.abs(this.speedX) == MAX_SPEED) this.acou++; 
+        if(Math.abs(this.vx) == MAX_SPEED) this.acou++; 
         this.updateAnim();
     }
 

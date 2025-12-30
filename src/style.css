@@ -71,6 +71,7 @@ body {
   background-size: cover;
   background-color: transparent;
   z-index: 10;
+  visibility: hidden;
 }
 
 /* ===== 共通ボタン ===== */
@@ -256,4 +257,102 @@ body {
     50%  { transform: translateY(-15px); }
     100% { transform: translateY(0); }
 }
+
+/* ===========================
+   TITLE MENU (完全独立)
+=========================== */
+
+/* 画面に被せるだけ（レイアウト不参加） */
+#titleMenuRoot {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 5000;
+  pointer-events: auto;
+}
+
+/* ojist.png を土台にする */
+#titleMenuBase {
+  width: 330px;
+  height: 330px;
+  background-image: url("../image/ojist.png");
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+#titleStageGrid {
+  position: absolute;
+  top: 73%;          /* 少し下へ */
+  left: 40%;         /* 中央より右 */
+  transform: translateY(-50%);
+  width: 50%;        /* 少し細く */
+  height: 30%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 5px;
+}
+
+/* セル（見た目だけ） */
+.titleStageCell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Press Start 2P", monospace;
+  font-size: 14px;
+  color: white;
+  background: rgba(0,0,0,0.65);
+  border: 2px solid white;
+  user-select: none;
+}
+
+/* 空きマス */
+.titleStageCell.empty {
+  background: transparent;
+  border: none;
+}
+
+/* ===== TITLE MENU LABEL ===== */
+#titleMenuLabel {
+  position: absolute;
+  top: 52%;
+  left: 60%;
+  transform: translateX(-50%);
+  font-family: "Press Start 2P", monospace;
+  font-size: 16px;
+  color: white;
+  letter-spacing: 2px;
+  text-shadow:
+    2px 2px 0 rgba(0,0,0,0.6);
+  user-select: none;
+  pointer-events: none;
+}
+
+.titleStageCell {
+  position: relative;
+}
+
+.titleStageCell::before {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  pointer-events: auto;
+}
+
+@keyframes stageBlink {
+  0%   { opacity: 1; }
+  50%  { opacity: 0.3; }
+  100% { opacity: 1; }
+}
+
+.titleStageCell.is-selected {
+  animation: stageBlink 1s steps(1) infinite;
+}
+
+
+
+
 

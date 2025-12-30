@@ -16,7 +16,7 @@ class Block {
         this.y = y<<8;
         this.kill = false;
         this.count = 0;
-        fieldData[y * FIELD_SIZE_W + x] = 367;
+        field.fieldData[y * FIELD_SIZE_W + x] = 367;
     }
 
     //更新処理
@@ -24,7 +24,7 @@ class Block {
         if(this.kill) return;
         if(++this.count == 11 && this.ty == 0) {
             this.kill = true;
-            fieldData[this.oy * FIELD_SIZE_W + this.ox] = this.bl;
+            field.fieldData[this.oy * FIELD_SIZE_W + this.ox] = this.bl;
             return;
         }
         if(this.ty == 0) return;
