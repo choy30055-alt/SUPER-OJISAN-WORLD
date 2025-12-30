@@ -328,22 +328,6 @@ abtn.addEventListener('touchend', (e) => {
     keyb.FBBUTTON = false;
 })*/
 
-//敵の配置 // ← x を一定間隔でずらす
-function enemyDraw() {
-    // クリボ
-    for (let i = 0; i < 14; i++) {
-        kuribo.push(new Kuribo(163, 10 + i * 10, 0, 8, 0, ITEM_KURIBO));
-    }
-    // ノコノコ
-    for (let i = 0; i < 14; i++) {
-        nokonoko.push(new Nokonoko(163, 15+ i * 10, 0, 7, 0, ITEM_NOKONOKO));
-    }
-    //ジュゲム
-    for (let i = 0; i < 8; i++) {
-        jyugem.push(new Jyugem(107, 1 + i * 20, 0, 9, 0, ITEM_JYUGEM));
-    }
-}  
-
 //BGMの切り替え
 function startGoalMusicFade() {
     fadeOutBgm(bgmSound, 60); //60フレームでフェード
@@ -544,8 +528,39 @@ stageCells.forEach(cell => {
     });
 });
 
-// 初期点滅
-updateStageSelectUI();
+//敵の配置 // ← x を一定間隔でずらす
+function enemyDraw_NOR() {
+    for (let i = 0; i < 14; i++) {
+        kuribo.push(new Kuribo(163, 10 + i * 10, 0, 8, 0, ITEM_KURIBO)); // クリボ
+    }   
+    for (let i = 0; i < 14; i++) {
+        nokonoko.push(new Nokonoko(163, 15+ i * 10, 0, 7, 0, ITEM_NOKONOKO)); // ノコノコ
+    }
+}  
+
+function enemyDraw_HARD() {
+    for (let i = 0; i < 16; i++) {
+        kuribo.push(new Kuribo(163, 10 + i * 10, 0, 9, 0, ITEM_KURIBO)); //クリボ
+    }
+    for (let i = 0; i < 16; i++) {
+        nokonoko.push(new Nokonoko(163, 15+ i * 10, 0, 8, 0, ITEM_NOKONOKO)); //ノコノコ
+    }
+    for (let i = 0; i < 10; i++) {
+        jyugem.push(new Jyugem(107, 1 + i * 20, 0, 11, 0, ITEM_JYUGEM)); //ジュゲム
+    }
+}
+
+function enemyDraw_HAMMER() {
+    for (let i = 0; i < 12; i++) {
+        kuribo.push(new Kuribo(163, 10 + i * 10, 0, 9, 0, ITEM_KURIBO)); //クリボ
+    }
+    for (let i = 0; i < 12; i++) {
+        nokonoko.push(new Nokonoko(163, 15+ i * 10, 0, 8, 0, ITEM_NOKONOKO)); //ノコノコ
+    }
+    for (let i = 0; i < 10; i++) {
+        jyugem.push(new Jyugem(107, 1 + i * 20, 0, 11, 0, ITEM_JYUGEM)); //ジュゲム
+    }
+}
 
 function gameStart() {  //スタートボタンでゲーム開始
     // ===== タイトル画面を消す =====
@@ -559,10 +574,7 @@ function gameStart() {  //スタートボタンでゲーム開始
     ojisan.updateMap = ojisan[funcName];
     document.getElementById("mstart").style.visibility = "hidden";   //スタートボタン非表示
     if (gameState !== GAME_START) return;
-    //startSound1.play();
-    //startSound1.addEventListener("ended", function(){
-        startSound2.play();
-    //});
+    startSound2.play();
     startSound2.addEventListener("ended", function(){
         bgmSound.loop = true;
         bgmSound.play();
@@ -581,15 +593,22 @@ function gameStart() {  //スタートボタンでゲーム開始
     loadImageAssets();
 
     startTime = performance.now();
+
     //アイテム・敵の配置
+    const enemyFunc = MAPS[selectedStage].enemyFunc;
+    if (enemyFunc) {
+        window[enemyFunc]();
+    }
     ojisan.draw();
-    enemyDraw();
     createFlag();
     createHammerBros();
     setupOjisanButton();
     //メインループ
     mainLoop();
 }
+
+// 初期点滅
+updateStageSelectUI();
 
 
 

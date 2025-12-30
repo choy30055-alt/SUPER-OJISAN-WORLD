@@ -253,28 +253,6 @@ class Ojisan {
             return;
         } 
 
-        //ハンマー：LOSE_ぶつかった時
-        if(this.tookDmgHammer) {
-            if (this.tookDmgHammer === 1) {
-                waSound.play();
-            }
-            this.y -= 8;
-            this.x -= 50; 
-            this.snum = 94;
-            this.h = this.snum == 94?16:32;
-            lifePoint += (this.loseValue * 0.25) / 100; //MYオリジナルロジック 
-            this.loseValue = 0;
-            if(++this.tookDmgHammer == 40) {
-               this.tookDmgHammer = 0; 
-               this.snum = 32; 
-               this.h = this.snum == 32?16:32;
-               this.type = TYPE_MINI;
-               this.ay = 16;
-               this.loseValue = -100;
-            }
-            return;
-        } 
-    
         //アニメのカウンタ
         this.acou++;
         if(Math.abs(this.vx) == MAX_SPEED) this.acou++;
