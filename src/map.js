@@ -33,7 +33,8 @@ const MAPS = {
         1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,
     ],
     updateMapFunc: "updateMap_NOR",  //ojisanのアップデート
-    enemyFunc: "enemyDraw_NOR"
+    enemyFunc: "enemyDraw_NOR",
+    displayName: "NORMAL"
     },
 
     HARD: {
@@ -67,7 +68,8 @@ const MAPS = {
         1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,
     ],
     updateMapFunc: "updateMap_NOR", //ojisanのアップデート
-    enemyFunc: "enemyDraw_HARD"
+    enemyFunc: "enemyDraw_HARD",
+    displayName: "HARD"
     },
 
     HAMMER: {
@@ -101,7 +103,8 @@ const MAPS = {
         1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,
     ],
     updateMapFunc: "updateMap_HAMMER", //ojisanのアップデート
-    enemyFunc: "enemyDraw_HAMMER"
+    enemyFunc: "enemyDraw_HAMMER",
+    displayName: "HAMMER"
     },
 };
 
