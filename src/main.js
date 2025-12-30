@@ -328,41 +328,21 @@ abtn.addEventListener('touchend', (e) => {
     keyb.FBBUTTON = false;
 })*/
 
-//敵の配置
+//敵の配置 // ← x を一定間隔でずらす
 function enemyDraw() {
-    kuribo.push(new Kuribo(163, 10, 0, 12, 0, ITEM_KURIBO));
-    kuribo.push(new Kuribo(163, 25, 0, 12, 0, ITEM_KURIBO));
-    kuribo.push(new Kuribo(163, 40, 0, 12, 0, ITEM_KURIBO));
-    kuribo.push(new Kuribo(163, 55, 0, 12, 0, ITEM_KURIBO));
-    kuribo.push(new Kuribo(163, 70, 0, 12, 0, ITEM_KURIBO));
-    kuribo.push(new Kuribo(163, 85, 0, 12, 0, ITEM_KURIBO));
-    kuribo.push(new Kuribo(163, 100, 0, 12, 0, ITEM_KURIBO));
-    kuribo.push(new Kuribo(163, 115, 0, 12, 0, ITEM_KURIBO));
-    kuribo.push(new Kuribo(163, 130, 0, 12, 0, ITEM_KURIBO));
-    kuribo.push(new Kuribo(163, 145, 0, 12, 0, ITEM_KURIBO));
-    kuribo.push(new Kuribo(163, 160, 0, 12, 0, ITEM_KURIBO));
-    kuribo.push(new Kuribo(163, 175, 0, 12, 0, ITEM_KURIBO));
-    nokonoko.push(new Nokonoko(163, 20, 0, 8, 0, ITEM_NOKONOKO));
-    nokonoko.push(new Nokonoko(163, 35, 0, 8, 0, ITEM_NOKONOKO));
-    nokonoko.push(new Nokonoko(163, 50, 0, 8, 0, ITEM_NOKONOKO));
-    nokonoko.push(new Nokonoko(163, 65, 0, 8, 0, ITEM_NOKONOKO));
-    nokonoko.push(new Nokonoko(163, 80, 0, 8, 0, ITEM_NOKONOKO));
-    nokonoko.push(new Nokonoko(163, 95, 0, 8, 0, ITEM_NOKONOKO));
-    nokonoko.push(new Nokonoko(163, 110, 0, 8, 0, ITEM_NOKONOKO));
-    nokonoko.push(new Nokonoko(163, 125, 0, 8, 0, ITEM_NOKONOKO));
-    nokonoko.push(new Nokonoko(163, 140, 0, 8, 0, ITEM_NOKONOKO));
-    nokonoko.push(new Nokonoko(163, 155, 0, 8, 0, ITEM_NOKONOKO));
-    nokonoko.push(new Nokonoko(163, 170, 0, 8, 0, ITEM_NOKONOKO));
-    nokonoko.push(new Nokonoko(163, 185, 0, 8, 0, ITEM_NOKONOKO));
-    jyugem.push(new Jyugem(107, 1, 1, 11, 0, ITEM_JYUGEM));
-    jyugem.push(new Jyugem(107, 40, 2, 11, 0, ITEM_JYUGEM));
-    jyugem.push(new Jyugem(107, 80, 3, 11, 0, ITEM_JYUGEM));
-    jyugem.push(new Jyugem(107, 100, 4, 11, 0, ITEM_JYUGEM));
-    jyugem.push(new Jyugem(107, 100, 1, -11, 0, ITEM_JYUGEM));
-    jyugem.push(new Jyugem(107, 130, 2, -11, 0, ITEM_JYUGEM));
-    jyugem.push(new Jyugem(107, 160, 3, -11, 0, ITEM_JYUGEM));
-    jyugem.push(new Jyugem(107, 188, 4, -11, 0, ITEM_JYUGEM));
-}
+    // クリボ
+    for (let i = 0; i < 14; i++) {
+        kuribo.push(new Kuribo(163, 10 + i * 10, 0, 8, 0, ITEM_KURIBO));
+    }
+    // ノコノコ
+    for (let i = 0; i < 14; i++) {
+        nokonoko.push(new Nokonoko(163, 15+ i * 10, 0, 7, 0, ITEM_NOKONOKO));
+    }
+    //ジュゲム
+    for (let i = 0; i < 8; i++) {
+        jyugem.push(new Jyugem(107, 1 + i * 20, 0, 9, 0, ITEM_JYUGEM));
+    }
+}  
 
 //BGMの切り替え
 function startGoalMusicFade() {
@@ -532,6 +512,41 @@ function showOjisanButton(wx, wy) {
     }, 800); // jump の animation 時間と合わせる
 }
 
+const stageCells = document.querySelectorAll(".titleStageCell");
+function updateStageSelectUI() {
+    stageCells.forEach(cell => {
+        if (cell.dataset.stage === selectedStage) {
+            cell.classList.add("is-selected");
+        } else {
+            cell.classList.remove("is-selected");
+        }
+    });
+}
+
+// ===== ステージセレクト：クリック処理 =====
+stageCells.forEach(cell => {
+    const stage = cell.dataset.stage;
+    if (!stage) return; // ??? は無視
+    cell.addEventListener("pointerdown", () => {
+    // すでに選択中なら無視（多重防止）
+    if (selectedStage === stage && !isSelectingStage) return;
+    // 選択更新
+    selectedStage = stage;
+    updateStageSelectUI();
+    // SE 再生
+    startSound1.play();
+    // 二重入力防止
+    isSelectingStage = false;
+    // 一拍おいてスタート
+    setTimeout(() => {
+        gameStart();
+    }, 2000);   // 300〜500ms 好みで調整 
+    });
+});
+
+// 初期点滅
+updateStageSelectUI();
+
 function gameStart() {  //スタートボタンでゲーム開始
     // ===== タイトル画面を消す =====
     const titleMenu = document.getElementById("titleMenuRoot");
@@ -575,41 +590,6 @@ function gameStart() {  //スタートボタンでゲーム開始
     //メインループ
     mainLoop();
 }
-
-const stageCells = document.querySelectorAll(".titleStageCell");
-function updateStageSelectUI() {
-    stageCells.forEach(cell => {
-        if (cell.dataset.stage === selectedStage) {
-            cell.classList.add("is-selected");
-        } else {
-            cell.classList.remove("is-selected");
-        }
-    });
-}
-
-// ===== ステージセレクト：クリック処理 =====
-stageCells.forEach(cell => {
-    const stage = cell.dataset.stage;
-    if (!stage) return; // ??? は無視
-    cell.addEventListener("pointerdown", () => {
-    // すでに選択中なら無視（多重防止）
-    if (selectedStage === stage && !isSelectingStage) return;
-    // 選択更新
-    selectedStage = stage;
-    updateStageSelectUI();
-    // SE 再生
-    startSound1.play();
-    // 二重入力防止
-    isSelectingStage = false;
-    // 一拍おいてスタート
-    setTimeout(() => {
-        gameStart();
-    }, 2000);   // 300〜500ms 好みで調整 
-    });
-});
-
-// 初期点滅
-updateStageSelectUI();
 
 
 
