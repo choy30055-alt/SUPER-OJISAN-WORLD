@@ -314,7 +314,7 @@
 //＊＊＊ゲームオーバー・ゴール界隈＊＊＊
     //ゲームオーバー判定
     Ojisan.prototype.checkGameOver = function() {
-        if(this.y > GROUND_LEVEL || lifePoint < 0) { //崖に落ちたら、ライフ0でisDead
+        if(this.y > GROUND_LEVEL || lifePoint <= 0) { //崖に落ちたら、ライフ0でisDead
             this.isDead = true;
             wahSound.play();    
             this.y = 1000;
