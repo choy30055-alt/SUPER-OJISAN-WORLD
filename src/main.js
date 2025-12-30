@@ -161,7 +161,8 @@ function draw() {
     con.fillText("OJISAN", 30, 30);
     con.fillText(fomattedScore, 20, 50);
     con.fillText("WORLD", 310, 30);
-    con.fillText("1-1", 320, 50);
+    let currenStageName = MAPS[selectedStage].displayName;
+    con.fillText(currenStageName, 310, 50);
     con.fillText("TIME", 430, 30);
     const formattedTime = String(timeLeft).padStart(3, '0');
     con.fillText(formattedTime, 440, 50); 
@@ -528,7 +529,7 @@ stageCells.forEach(cell => {
     });
 });
 
-//敵の配置 // ← x を一定間隔でずらす
+//敵の配置 一定間隔でずらす
 function enemyDraw_NOR() {
     for (let i = 0; i < 14; i++) {
         kuribo.push(new Kuribo(163, 10 + i * 10, 0, 8, 0, ITEM_KURIBO)); // クリボ
@@ -546,7 +547,7 @@ function enemyDraw_HARD() {
         nokonoko.push(new Nokonoko(163, 15+ i * 10, 0, 8, 0, ITEM_NOKONOKO)); //ノコノコ
     }
     for (let i = 0; i < 10; i++) {
-        jyugem.push(new Jyugem(107, 1 + i * 20, 0, 11, 0, ITEM_JYUGEM)); //ジュゲム
+        jyugem.push(new Jyugem(107, 1 + i * 20, 0, 10, 0, ITEM_JYUGEM)); //ジュゲム
     }
 }
 
@@ -558,7 +559,7 @@ function enemyDraw_HAMMER() {
         nokonoko.push(new Nokonoko(163, 15+ i * 10, 0, 8, 0, ITEM_NOKONOKO)); //ノコノコ
     }
     for (let i = 0; i < 10; i++) {
-        jyugem.push(new Jyugem(107, 1 + i * 20, 0, 11, 0, ITEM_JYUGEM)); //ジュゲム
+        jyugem.push(new Jyugem(107, 1 + i * 20, 0, 10, 0, ITEM_JYUGEM)); //ジュゲム
     }
 }
 
