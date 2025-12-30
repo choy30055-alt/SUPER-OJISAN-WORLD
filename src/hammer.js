@@ -213,7 +213,7 @@ class HammerBros {
         const dy = Math.abs((ojisan.y >> 4) - (this.y >> 4));
         const approaching = (dx < 50 && this.prevDx >= 50); //接近発動間隔
         if (approaching && dy < 24) {
-            if (Math.random() < 1.00) { //ランダム回避確率
+            if (Math.random() < 0.5) { //ランダム回避確率
                 this.vy = -90;
             }
         }
@@ -232,7 +232,7 @@ class HammerBros {
             const entering =
                 (adx < 72 && (!fb.prevDx || fb.prevDx >= 72)); //接近発動間隔
             if (entering && dy < 24) {
-                if (Math.random() < 0.0) {  //ランダム回避確率
+                if (Math.random() < 0.3) {  //ランダム回避確率
                     this.vy = -90;
                     break;
                 }
@@ -364,3 +364,4 @@ class HammerBrosFlip extends HammerBros { // 演出用：横移動・AI完全停
         vcon.restore();
     }
 }
+
