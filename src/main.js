@@ -568,7 +568,7 @@ function gameStart() {  //スタートボタンでゲーム開始
     startTime = performance.now();
     //アイテム・敵の配置
     ojisan.draw();
-    //enemyDraw();
+    enemyDraw();
     createFlag();
     createHammerBros();
     setupOjisanButton();
@@ -610,5 +610,6 @@ stageCells.forEach(cell => {
 
 // 初期点滅
 updateStageSelectUI();
+
 
 
