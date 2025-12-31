@@ -88,7 +88,7 @@
                         item.push(new Item(384, x + 1, y, 0, 0, ITEM_COIN));
                         item.push(new Item(384, x + 2, y, 0, 0, ITEM_COIN));
                         item.push(new Item(384, x + 3, y, 0, 0, ITEM_COIN));
-                        kuribo.push(new Kuribo(97, x + 4, 0, 0, 0, ITEM_KURIBO));
+                        kuribo.push(new Kuribo(97, x + 4, 0, 9, 0, ITEM_KURIBO));
                         block.push(new Block(374, x, y));
                         break;
                 }
