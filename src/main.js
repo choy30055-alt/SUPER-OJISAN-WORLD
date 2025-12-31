@@ -321,7 +321,7 @@ function enemyDraw_HARD() {
         nokonoko.push(new Nokonoko(163, 10+ i * 10, 0, 8, 0, ITEM_NOKONOKO)); //ノコノコ
     }
     for (let i = 0; i < 10; i++) {
-        jyugem.push(new Jyugem(107, 1 + i * 15, 0, 15, 0, ITEM_JYUGEM)); //ジュゲム
+        jyugem.push(new Jyugem(107, 1 + i * 15, 0, 10, 0, ITEM_JYUGEM)); //ジュゲム
     }
 }
 
@@ -330,7 +330,7 @@ function enemyDraw_HAMMER() {
         kuribo.push(new Kuribo(163, 5 + i * 15, 0, 9, 0, ITEM_KURIBO)); //クリボ9810
     }
     for (let i = 0; i < 12; i++) {
-        nokonoko.push(new Nokonoko(163, 10+ i * 15, 8, 0, 0, ITEM_NOKONOKO)); //ノコノコ
+        nokonoko.push(new Nokonoko(163, 10+ i * 15, 0, 8, 0, ITEM_NOKONOKO)); //ノコノコ
     }
     for (let i = 0; i < 10; i++) {
         jyugem.push(new Jyugem(107, 1 + i * 25, 0, 10, 0, ITEM_JYUGEM)); //ジュゲム
