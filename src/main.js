@@ -130,9 +130,7 @@ function update() {
 function draw() {
     vcon.fillStyle = "#66AAFF"; //#66AAFF
     vcon.fillRect(0, 0, SCREEN_SIZE_W, SCREEN_SIZE_H);
-
     for (const h of hammer) {h.draw();}
-    
     //マップを表示
     field.draw();
     //アイテムを表示
@@ -176,6 +174,42 @@ function draw() {
     con.fillText("x " + lifePoint, 171, 30);
 }
 
+//＊＊＊ステージ設定界隈＊＊＊
+//ステージ等の選定
+const stageCells = document.querySelectorAll(".titleStageCell");
+function updateStageSelectUI() {
+    stageCells.forEach(cell => {
+        if (cell.dataset.stage === selectedStage) {
+            cell.classList.add("is-selected");
+        } else {
+            cell.classList.remove("is-selected");
+        }
+    });
+}
+// ===== ステージセレクト：クリック処理 =====
+stageCells.forEach(cell => {
+    const stage = cell.dataset.stage;
+    if (!stage) return; // ??? は無視
+    cell.addEventListener("pointerdown", () => {
+    // すでに選択中なら無視（多重防止）
+    if (selectedStage === stage && !isSelectingStage) return;
+    // 選択更新
+    selectedStage = stage;
+    updateStageSelectUI();
+    // SE 再生
+    startSound1.play();
+    // 二重入力防止
+    isSelectingStage = false;
+    // 一拍おいてスタート
+    setTimeout(() => {
+        gameStart();
+    }, 2000);   // 300〜500ms 好みで調整 
+    });
+});
+// 初期点滅
+updateStageSelectUI();
+
+//＊＊*初期設定界隈＊＊＊
 //スコアの6桁表示
 function fomatScore(score) {
     const isNegative = score < 0;
@@ -196,18 +230,18 @@ function drawSprite(snum, x, y) {
     vcon.drawImage(chImg, sx, sy, 16, 16, x, y, 16, 16);
 }
 
-function drawObj(obj) {
-    //スプライトのブロックを表示
-    for(let i = 0; i < obj.length; i++)
-        obj[i].draw();
-}
-
 function updateObj(obj) {
     //スプライトのブロックを更新
     for(let i = obj.length - 1; i >= 0; i--) {
         obj[i].update();
         if(obj[i].kill) obj.splice(i, 1);
     }
+}
+
+function drawObj(obj) {
+    //スプライトのブロックを表示
+    for(let i = 0; i < obj.length; i++)
+        obj[i].draw();
 }
 
 function isBlock(tx, ty) {
@@ -267,6 +301,40 @@ function createHammerBros() {
     const ha2y = Block.y - 5;
     hammerBros.push(new HammerBros(134, ha1x, ha1y, 7, 0, ITEM_HAMMERBROS));
     hammerBros.push(new HammerBros(134, ha2x, ha2y, 7, 0, ITEM_HAMMERBROS)); 
+}
+
+//敵の配置 一定間隔でずらす
+function enemyDraw_NOR() {
+    for (let i = 0; i < 14; i++) {
+        kuribo.push(new Kuribo(163, 10 + i * 12, 0, 8, 0, ITEM_KURIBO)); // クリボ
+    }   
+    for (let i = 0; i < 14; i++) {
+        nokonoko.push(new Nokonoko(163, 15+ i * 12, 0, 7, 0, ITEM_NOKONOKO)); // ノコノコ
+    }
+}  
+
+function enemyDraw_HARD() {
+    for (let i = 0; i < 16; i++) {
+        kuribo.push(new Kuribo(163, 5 + i * 12, 0, 9, 0, ITEM_KURIBO)); //クリボ
+    }
+    for (let i = 0; i < 16; i++) {
+        nokonoko.push(new Nokonoko(163, 10+ i * 12, 0, 8, 0, ITEM_NOKONOKO)); //ノコノコ
+    }
+    for (let i = 0; i < 10; i++) {
+        jyugem.push(new Jyugem(107, 1 + i * 15, 0, 15, 0, ITEM_JYUGEM)); //ジュゲム
+    }
+}
+
+function enemyDraw_HAMMER() {
+    for (let i = 0; i < 12; i++) {
+        kuribo.push(new Kuribo(163, 5 + i * 15, 0, 9, 0, ITEM_KURIBO)); //クリボ
+    }
+    for (let i = 0; i < 12; i++) {
+        nokonoko.push(new Nokonoko(163, 10+ i * 15, 0, 8, 0, ITEM_NOKONOKO)); //ノコノコ
+    }
+    for (let i = 0; i < 10; i++) {
+        jyugem.push(new Jyugem(107, 1 + i * 25, 0, 10, 0, ITEM_JYUGEM)); //ジュゲム
+    }
 }
 
 //キーボードが押されたときに呼ばれる
@@ -329,12 +397,12 @@ abtn.addEventListener('touchend', (e) => {
     keyb.FBBUTTON = false;
 })*/
 
+//＊＊＊BGM切替界隈＊＊＊
 //BGMの切り替え
 function startGoalMusicFade() {
     fadeOutBgm(bgmSound, 60); //60フレームでフェード
     fadeInBgm(goalSound, 60);
 }
-
 function fadeOutBgm(audio, frames) {
     let volume = audio.volume;
     const step = volume / frames;
@@ -350,7 +418,6 @@ function fadeOutBgm(audio, frames) {
         }
     }, 1000 / 60);
 } 
-
 function fadeInBgm(audio, frames) {
     let volume = 0;
     audio.volume = 0;
@@ -368,6 +435,7 @@ function fadeInBgm(audio, frames) {
     }, 1000 / 60);
 } 
 
+//＊＊＊ゲームオーバー・リロード界隈＊＊＊
 //画像の事前読み込み
 function loadImageAssets() {
     const img = new Image();
@@ -378,7 +446,6 @@ function loadImageAssets() {
     }
     img.src = "image/ojigameover.png";
 }
-
 //ゲームオーバー画像
 function drawGameOverImage() {
     // 画面を一度クリアするか、黒いオーバーレイをかける
@@ -404,7 +471,6 @@ function drawGameOverImage() {
     con.fillText("COIN : " + coinct, can.width / 2, (can.height / 2) + 200); 
     con.textAlign = 'left'; // textAlignをデフォルト（左揃え）に戻す
 }
-
 //ゲームオーバーのトリガー
 function triggerGameOver() {
     if(gameState === GAME_OVER) 
@@ -423,7 +489,6 @@ function triggerGameOver() {
         window.location.reload(true); // 強制的に再読み込みしてスタートに戻る
     },5000); // 5000ミリ秒 = 5秒
 }
-
 //ゲームリロード処理
 document.getElementById("faceBtn").addEventListener("pointerdown", () => {
     window.location.reload(true);
@@ -448,7 +513,6 @@ function updateFaceBtnPosition() {
     faceBtn.style.width = fw + "px";
     faceBtn.style.height = fh + "px";
 }
-
 function setupOjisanButton() {
     const overlay = document.getElementById("gameOverlay");
     if (!overlay) return;
@@ -461,7 +525,6 @@ function setupOjisanButton() {
         });
     }
 }
-
 function getOjisanScreenPos() {  // ===== Ojisan UI 用：画面座標取得 =====
     // ojisan は 16倍座標なので px に戻す
     const sx = (ojisan.x >> 4) - field.scx;
@@ -474,7 +537,6 @@ function getOjisanScreenPos() {  // ===== Ojisan UI 用：画面座標取得 ===
         y: rect.top  + sy * scaleY
     };
 }
-
 function showOjisanButton(wx, wy) {
     const btn = document.getElementById("ojisanBtn");
     if (!btn) return;
@@ -497,72 +559,7 @@ function showOjisanButton(wx, wy) {
     }, 800); // jump の animation 時間と合わせる
 }
 
-const stageCells = document.querySelectorAll(".titleStageCell");
-function updateStageSelectUI() {
-    stageCells.forEach(cell => {
-        if (cell.dataset.stage === selectedStage) {
-            cell.classList.add("is-selected");
-        } else {
-            cell.classList.remove("is-selected");
-        }
-    });
-}
-
-// ===== ステージセレクト：クリック処理 =====
-stageCells.forEach(cell => {
-    const stage = cell.dataset.stage;
-    if (!stage) return; // ??? は無視
-    cell.addEventListener("pointerdown", () => {
-    // すでに選択中なら無視（多重防止）
-    if (selectedStage === stage && !isSelectingStage) return;
-    // 選択更新
-    selectedStage = stage;
-    updateStageSelectUI();
-    // SE 再生
-    startSound1.play();
-    // 二重入力防止
-    isSelectingStage = false;
-    // 一拍おいてスタート
-    setTimeout(() => {
-        gameStart();
-    }, 2000);   // 300〜500ms 好みで調整 
-    });
-});
-
-//敵の配置 一定間隔でずらす
-function enemyDraw_NOR() {
-    for (let i = 0; i < 14; i++) {
-        kuribo.push(new Kuribo(163, 10 + i * 12, 0, 8, 0, ITEM_KURIBO)); // クリボ
-    }   
-    for (let i = 0; i < 14; i++) {
-        nokonoko.push(new Nokonoko(163, 15+ i * 12, 0, 7, 0, ITEM_NOKONOKO)); // ノコノコ
-    }
-}  
-
-function enemyDraw_HARD() {
-    for (let i = 0; i < 16; i++) {
-        kuribo.push(new Kuribo(163, 5 + i * 12, 0, 9, 0, ITEM_KURIBO)); //クリボ
-    }
-    for (let i = 0; i < 16; i++) {
-        nokonoko.push(new Nokonoko(163, 10+ i * 12, 0, 8, 0, ITEM_NOKONOKO)); //ノコノコ
-    }
-    for (let i = 0; i < 10; i++) {
-        jyugem.push(new Jyugem(107, 1 + i * 15, 0, 15, 0, ITEM_JYUGEM)); //ジュゲム
-    }
-}
-
-function enemyDraw_HAMMER() {
-    for (let i = 0; i < 12; i++) {
-        kuribo.push(new Kuribo(163, 5 + i * 15, 0, 9, 0, ITEM_KURIBO)); //クリボ
-    }
-    for (let i = 0; i < 12; i++) {
-        nokonoko.push(new Nokonoko(163, 10+ i * 15, 0, 8, 0, ITEM_NOKONOKO)); //ノコノコ
-    }
-    for (let i = 0; i < 10; i++) {
-        jyugem.push(new Jyugem(107, 1 + i * 25, 0, 10, 0, ITEM_JYUGEM)); //ジュゲム
-    }
-}
-
+//＊＊＊ゲームスタート＊＊＊
 function gameStart() {  //スタートボタンでゲーム開始
     // ===== タイトル画面を消す =====
     const titleMenu = document.getElementById("titleMenuRoot");
@@ -590,11 +587,8 @@ function gameStart() {  //スタートボタンでゲーム開始
         faceImage = imgFace; // 読み込み完了後に変数にセット
     }
     imgFace.src = "image/ojiface.png";
-
     loadImageAssets();
-
     startTime = performance.now();
-
     //アイテム・敵の配置
     const enemyFunc = MAPS[selectedStage].enemyFunc;
     if (enemyFunc) {
@@ -604,12 +598,10 @@ function gameStart() {  //スタートボタンでゲーム開始
     createFlag();
     createHammerBros();
     setupOjisanButton();
-    //メインループ
     mainLoop();
 }
 
-// 初期点滅
-updateStageSelectUI();
+
 
 
 
