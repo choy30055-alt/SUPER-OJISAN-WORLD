@@ -388,7 +388,7 @@ class Ojisan {
             if (this.tookDmgKuri === 1) {
                 lvdSound.play();
             }
-            this.y -= 8;
+            this.y -= 20;
             this.snum = 94;
             this.h = this.snum == 94?16:32;
             lifePoint += this.loseValue / 100; //MYオリジナルロジック 
@@ -410,7 +410,7 @@ class Ojisan {
             if (this.tookDmgNoko === 1) {
                 lvdSound.play();
             }
-            this.y -= 8;
+            this.y -= 20;
             this.snum = 94;
             this.h = this.snum == 94?16:32;
             lifePoint += this.loseValue / 100; //MYオリジナルロジック 
@@ -432,7 +432,7 @@ class Ojisan {
             if (this.tookDmgToge === 1) {
                 lvdSound.play();
             }
-            this.y -= 8;
+            this.y -= 20;
             this.snum = 94;
             this.h = this.snum == 94?16:32;
             lifePoint += this.loseValue / 100; //MYオリジナルロジック 
@@ -496,3 +496,4 @@ class Ojisan {
     }
 
 }
+
