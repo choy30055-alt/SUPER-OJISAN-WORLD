@@ -18,6 +18,7 @@ class Togezo {
         this.acou = 0;   
         if(tp == undefined) tp = ITEM_TOGEZO;
         this.tp = tp;
+        this.fallOut = false; //地面落ち用フラグ
     }
 
     //更新処理
@@ -78,6 +79,7 @@ class Togezo {
 
     //床の判定
     checkFloor() {
+        if (this.fallOut) return; //地面落ち用フラグ
         if(this.vy <= 0) return;
         let lx = ((this.x + this.vx)>>4);
         let ly = ((this.y + this.vy)>>4);

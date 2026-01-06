@@ -193,6 +193,7 @@ class Ojisan {
                 lvdSound.play();
             }
             this.y -= 20;
+            this.vy = -40;
             this.snum = 94;
             this.h = this.snum == 94?16:32;
             lifePoint += this.loseValue / 100; //MYオリジナルロジック 
@@ -215,6 +216,7 @@ class Ojisan {
                 lvdSound.play();
             }
             this.y -= 20;
+            this.vy = -40;
             this.snum = 94;
             this.h = this.snum == 94?16:32;
             lifePoint += this.loseValue / 100; //MYオリジナルロジック 
@@ -237,6 +239,7 @@ class Ojisan {
                 lvdSound.play();
             }
             this.y -= 20;
+            this.vy = -40;
             this.snum = 94;
             this.h = this.snum == 94?16:32;
             lifePoint += this.loseValue / 100; //MYオリジナルロジック 
@@ -389,6 +392,7 @@ class Ojisan {
                 lvdSound.play();
             }
             this.y -= 20;
+            this.vy = -40;
             this.snum = 94;
             this.h = this.snum == 94?16:32;
             lifePoint += this.loseValue / 100; //MYオリジナルロジック 
@@ -411,6 +415,7 @@ class Ojisan {
                 lvdSound.play();
             }
             this.y -= 20;
+            this.vy = -40;
             this.snum = 94;
             this.h = this.snum == 94?16:32;
             lifePoint += this.loseValue / 100; //MYオリジナルロジック 
@@ -433,6 +438,7 @@ class Ojisan {
                 lvdSound.play();
             }
             this.y -= 20;
+            this.vy = -40;
             this.snum = 94;
             this.h = this.snum == 94?16:32;
             lifePoint += this.loseValue / 100; //MYオリジナルロジック 
@@ -454,7 +460,7 @@ class Ojisan {
             if (this.tookDmgHammer === 1) {
                 waSound.play();
             }
-            this.y -= 8;
+            this.y -= 20;
             this.x -= 50; 
             this.snum = 94;
             this.h = this.snum == 94?16:32;
@@ -494,6 +500,4 @@ class Ojisan {
         this.y += this.vy;
 
     }
-
 }
-

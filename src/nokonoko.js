@@ -18,14 +18,42 @@ class Nokonoko {
         this.acou = 0;   
         if(tp == undefined) tp = ITEM_NOKONOKO;
         this.tp = tp;
+        this.fallOut = false; //地面落ち用フラグ
     }
 
     //更新処理
     update() {
         if(this.kill) return;
-        //if (this.kickCool > 0) this.kickCool--;
         if(this.proc_nokonoko()) return;
-  
+
+        // ★ 甲羅で倒せる敵まとめ
+        const shellTargets = [
+            { list: kuribo,   deal: "dealDmgKuri" },
+            { list: nokonoko, deal: "dealDmgNoko" },
+            { list: togezo,   deal: "dealDmgToge" }
+        ];
+        // ★ 裏ノコノコが甲羅かつ転がっている時だけ
+        if (this.tp === ITEM_URNOKONOKO && this.vx !== 0) {
+            for (const g of shellTargets) {
+                for (const e of g.list) {
+                    // 自分自身・死亡済みは無視
+                    if (e === this) continue;
+                    if (e.kill) continue;
+                    // 当たり判定
+                    if (!e.checkHit(this)) continue;
+                    // ---- 倒す演出 ----
+                    fumuSound.play();
+                    e.vy = -30;
+                    e.vx = e.x < this.x ? -16 : 16;
+                    e.fallOut = true; //地面落ち用フラグ
+                    setTimeout(() => {
+                        e.kill = true;
+                    }, 1000);
+                    ojisan[g.deal] = 1; //得点処理の為にオジサンへフラグを渡す
+                }
+            }
+        }
+
         this.checkWall();
         this.checkFloor();
         this.checkCliff();
@@ -78,10 +106,10 @@ class Nokonoko {
 
     //床の判定
     checkFloor() {
+        if (this.fallOut) return; //地面落ち用フラグ
         if(this.vy <= 0) return;
         let lx = ((this.x + this.vx)>>4);
         let ly = ((this.y + this.vy)>>4);
-
         if(field.isBlock(lx + 1, ly + 15) ||
           field.isBlock(lx + 14, ly + 15)) { 
             this.vy = 0;
@@ -141,7 +169,7 @@ class Nokonoko {
             setTimeout(() => {  // 一定時間後に復活
                 this.vx = 10;
                 this.tp = ITEM_NOKONOKO;
-            }, 9000);
+            }, 12000);
             return true;
         } 
         if (collisionType === "hit") {  //通常ヒット（ダメージ）
@@ -149,7 +177,7 @@ class Nokonoko {
             return true;
         }
         return false;
-}
+    }
 
     updateAnim() {
         //アニメスプライトの決定
