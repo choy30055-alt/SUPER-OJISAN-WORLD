@@ -1,6 +1,22 @@
 //
 //メインループ
 //
+// ================================
+// iOS Safari ピンチズーム完全防止
+// ================================
+document.addEventListener('touchmove', function(e) {
+    e.preventDefault();
+}, { passive: false });
+
+document.addEventListener('gesturestart', function(e) {
+    e.preventDefault();
+});
+document.addEventListener('gesturechange', function(e) {
+    e.preventDefault();
+});
+document.addEventListener('gestureend', function(e) {
+    e.preventDefault();
+});
 let vcan = document.createElement("canvas");
 let vcon = vcan.getContext("2d");
 let can = document.getElementById("can");
@@ -600,6 +616,7 @@ function gameStart() {  //スタートボタンでゲーム開始
     setupOjisanButton();
     mainLoop();
 }
+
 
 
 
