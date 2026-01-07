@@ -69,6 +69,12 @@
    <script src="./src/ojisan.js"></script>
    <script src="./src/ojisan_func.js"></script>
    <script src="./src/main.js"></script>
+   <script>
+     if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("./sw.js");
+      }
+   </script>
 </body>
 </html>
+
 
